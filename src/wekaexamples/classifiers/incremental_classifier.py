@@ -11,26 +11,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# crossvalidation_addprediction.py
+# incremental_classifier.py
 # Copyright (C) 2014 Fracpete (fracpete at gmail dot com)
 
 import os
+import sys
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
-from weka.core.classes import Random
 from weka.core.converters import Loader
-from weka.core.dataset import Instances
-from weka.classifiers import Classifier, Evaluation
-from weka.filters import Filter
+from weka.classifiers import Classifier
 
 
-def main():
+def main(args):
     """
-    Just runs some example code.
+    Trains a NaiveBayesUpdateable classifier incrementally on a dataset. The dataset can be supplied as parameter.
+    :param args: the commandline arguments
+    :type args: list
     """
 
     # load a dataset
-    data_file = helper.get_data_dir() + os.sep + "vote.arff"
+    if len(args) <= 1:
+        data_file = helper.get_data_dir() + os.sep + "vote.arff"
+    else:
+        data_file = args[1]
     helper.print_info("Loading dataset: " + data_file)
     loader = Loader("weka.core.converters.ArffLoader")
     data = loader.load_file(data_file, incremental=True)
@@ -53,7 +56,7 @@ def main():
 if __name__ == "__main__":
     try:
         jvm.start()
-        main()
+        main(sys.argv)
     except Exception, e:
         print(e)
     finally:
