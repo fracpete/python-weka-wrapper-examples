@@ -20,6 +20,10 @@ from setuptools import setup
 setup(
     name="python-weka-wrapper-examples",
     description="Examples for the python-weka-wrapper library.",
+    long_description=
+    "Examples for the python-weka-wrapper library. "
+    + "Some examples are modelled after the Examples for Weka, located here: "
+    + "https://svn.cms.waikato.ac.nz/svn/weka/trunk/wekaexamples/",
     url="https://github.com/fracpete/python-weka-wrapper-examples",
     classifiers=[
         'Development Status :: 3 - Alpha',

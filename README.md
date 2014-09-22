@@ -2,6 +2,8 @@
 
 Example code for the Python wrapper for Weka (https://github.com/fracpete/python-weka-wrapper).
 
+Some of the examples are modelled after the original Examples for Weka (https://svn.cms.waikato.ac.nz/svn/weka/trunk/wekaexamples/).
+
 Requirements:
 
 * Python
@@ -10,6 +12,7 @@ Requirements:
 
 The Python libraries you can either install using `pip install <name>` or use
 pre-built packages available for your platform.
+
 
 ## Forum
 
