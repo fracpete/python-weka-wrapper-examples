@@ -178,8 +178,12 @@ def main():
     print("rootMeanPriorSquaredError: " + str(evaluation.root_mean_prior_squared_error()))
     print("rootRelativeSquaredError: " + str(evaluation.root_relative_squared_error()))
     print("prediction output:\n" + str(pred_output))
-    plot_cls.plot_roc(evaluation, title="ROC diabetes", wait=False)
-    plot_cls.plot_prc(evaluation, title="PRC diabetes", wait=False)
+    plot_cls.plot_roc(
+        evaluation, title="ROC diabetes",
+        class_index=range(0, diabetes_data.get_class_attribute().num_values()), wait=False)
+    plot_cls.plot_prc(
+        evaluation, title="PRC diabetes",
+        class_index=range(0, diabetes_data.get_class_attribute().num_values()), wait=False)
 
     # load a numeric dataset
     bolts_file = helper.get_data_dir() + os.sep + "bolts.arff"
