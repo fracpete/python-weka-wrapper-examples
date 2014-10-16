@@ -76,10 +76,7 @@ def main():
     remove.set_inputformat(iris_inc)
     iris_filtered = remove.get_outputformat()
     clusterer.build_clusterer(iris_filtered)
-    while True:
-        inst = loader.next_instance(iris_filtered)
-        if inst is None:
-            break
+    for inst in loader:
         remove.input(inst)
         inst_filtered = remove.output()
         clusterer.update_clusterer(inst_filtered)

@@ -11,7 +11,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# incremental_classifier.py
+# attribute_selection_test.py
 # Copyright (C) 2014 Fracpete (fracpete at gmail dot com)
 
 import os
@@ -19,36 +19,33 @@ import sys
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
-from weka.classifiers import Classifier
+from weka.core.classes import Random
+from weka.core.dataset import Instances, Instance, Attribute
+from weka.classifiers import Classifier, Evaluation
+from weka.filters import Filter
+
+
+def create_dataset_header():
+    """
+    Creates the dataset header.
+    :return: the header
+    :rtype: Instances
+    """
+    att_msg = Attribute.create_string("Message")
+    att_cls = Attribute.create_nominal("Class", ["miss", "hit"])
+    result = Instances.create_instances("MessageClassificationProblem", [att_msg, att_cls], 0)
+    return result
 
 
 def main(args):
     """
-    Trains a NaiveBayesUpdateable classifier incrementally on a dataset. The dataset can be supplied as parameter.
+    TODO
     :param args: the commandline arguments
     :type args: list
     """
 
-    # load a dataset
-    if len(args) <= 1:
-        data_file = helper.get_data_dir() + os.sep + "vote.arff"
-    else:
-        data_file = args[1]
-    helper.print_info("Loading dataset: " + data_file)
-    loader = Loader(classname="weka.core.converters.ArffLoader")
-    data = loader.load_file(data_file, incremental=True)
-    data.set_class_index(data.num_attributes() - 1)
-
-    # classifier
-    nb = Classifier(classname="weka.classifiers.bayes.NaiveBayesUpdateable", options=None)
-    nb.build_classifier(data)
-
-    # train incrementally
-    for inst in loader:
-        nb.update_classifier(inst)
-
-    print(nb)
-
+    data = create_dataset_header()
+    print(str(data))
 
 if __name__ == "__main__":
     try:

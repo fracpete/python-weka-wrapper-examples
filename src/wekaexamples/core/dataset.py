@@ -37,8 +37,14 @@ def main():
     iris_data.set_class_index(iris_data.num_attributes() - 1)
     helper.print_title("Iris dataset")
     print(iris_data)
+    helper.print_title("Iris dataset (incrementally output)")
+    for i in iris_data:
+        print(i)
     helper.print_title("Iris summary")
     print(Instances.summary(iris_data))
+    helper.print_title("Iris attributes")
+    for a in iris_data.attributes():
+        print(a)
     helper.print_title("Instance at #0")
     print(iris_data.get_instance(0))
     print(iris_data.get_instance(0).get_values())
@@ -47,6 +53,9 @@ def main():
     print("numeric stats (first attribute):\n" + str(iris_data.get_attribute_stats(0).numeric_stats()))
     print("nominal counts (last attribute):\n"
           + str(iris_data.get_attribute_stats(iris_data.num_attributes() - 1).nominal_counts()))
+    helper.print_title("Instance values at #0")
+    for v in iris_data.get_instance(0):
+        print(v)
 
     # append datasets
     helper.print_title("append datasets")
@@ -85,10 +94,7 @@ def main():
     iris_data.set_class_index(iris_data.num_attributes() - 1)
     helper.print_title("Iris dataset")
     print(iris_data)
-    while True:
-        inst = loader.next_instance(iris_data)
-        if inst is None:
-            break
+    for inst in loader:
         print(inst)
 
     # create attributes

@@ -74,10 +74,7 @@ def main():
     iris_inc.set_class_index(iris_inc.num_attributes() - 1)
     classifier = Classifier(classname="weka.classifiers.bayes.NaiveBayesUpdateable")
     classifier.build_classifier(iris_inc)
-    while True:
-        inst = loader.next_instance(iris_inc)
-        if inst is None:
-            break
+    for inst in loader:
         classifier.update_classifier(inst)
     print(classifier)
 
