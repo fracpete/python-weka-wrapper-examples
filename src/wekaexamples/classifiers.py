@@ -16,6 +16,7 @@
 
 import os
 import weka.core.jvm as jvm
+import weka.core.utils as utils
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
 from weka.classifiers import Classifier, SingleClassifierEnhancer, MultipleClassifiersCombiner, FilteredClassifier, \
@@ -39,6 +40,14 @@ def main():
     loader = Loader("weka.core.converters.ArffLoader")
     iris_data = loader.load_file(iris_file)
     iris_data.set_class_index(iris_data.num_attributes() - 1)
+
+    # classifier from commandline
+    helper.print_title("Creating SMO from command-line string")
+    cmdline = 'weka.classifiers.functions.SMO -K "weka.classifiers.functions.supportVector.NormalizedPolyKernel -E 3.0"'
+    optionhandler = utils.from_commandline(cmdline)
+    classifier = Classifier(jobject=optionhandler.jobject)
+    print("input: " + cmdline)
+    print("output: " + classifier.to_commandline())
 
     # build a classifier and output model
     helper.print_title("Training J48 classifier on iris")
