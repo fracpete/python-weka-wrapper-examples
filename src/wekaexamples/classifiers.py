@@ -45,8 +45,10 @@ def main():
     helper.print_title("Creating SMO from command-line string")
     cmdline = 'weka.classifiers.functions.SMO -K "weka.classifiers.functions.supportVector.NormalizedPolyKernel -E 3.0"'
     classifier = utils.from_commandline(cmdline, classname="weka.classifiers.Classifier")
+    classifier.build_classifier(iris_data)
     print("input: " + cmdline)
     print("output: " + classifier.to_commandline())
+    print("model:\n" + str(classifier))
 
     # build a classifier and output model
     helper.print_title("Training J48 classifier on iris")
