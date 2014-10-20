@@ -44,7 +44,7 @@ def main():
     # classifier from commandline
     helper.print_title("Creating SMO from command-line string")
     cmdline = 'weka.classifiers.functions.SMO -K "weka.classifiers.functions.supportVector.NormalizedPolyKernel -E 3.0"'
-    classifier = utils.from_commandline(cmdline, kls="weka.classifiers.Classifier")
+    classifier = utils.from_commandline(cmdline, classname="weka.classifiers.Classifier")
     print("input: " + cmdline)
     print("output: " + classifier.to_commandline())
 
