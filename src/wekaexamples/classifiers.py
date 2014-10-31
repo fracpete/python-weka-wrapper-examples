@@ -20,7 +20,7 @@ import weka.core.utils as utils
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
 from weka.classifiers import Classifier, SingleClassifierEnhancer, MultipleClassifiersCombiner, FilteredClassifier, \
-    PredictionOutput
+    PredictionOutput, Kernel, KernelClassifier
 from weka.classifiers import Evaluation
 from weka.filters import Filter
 from weka.core.classes import Random
@@ -48,6 +48,15 @@ def main():
     classifier.build_classifier(iris_data)
     print("input: " + cmdline)
     print("output: " + classifier.to_commandline())
+    print("model:\n" + str(classifier))
+
+    # kernel classifier
+    helper.print_title("Creating SMO as KernelClassifier")
+    kernel = Kernel(classname="weka.classifiers.functions.supportVector.RBFKernel", options=["-G", "0.001"])
+    classifier = KernelClassifier(classname="weka.classifiers.functions.SMO", options=["-M"])
+    classifier.set_kernel(kernel)
+    classifier.build_classifier(iris_data)
+    print("classifier: " + classifier.to_commandline())
     print("model:\n" + str(classifier))
 
     # build a classifier and output model
