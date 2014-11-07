@@ -37,8 +37,11 @@ setup(
     },
     packages=[
         "wekaexamples",
-        "wekaexamples.core",
-        "wekaexamples.plot"
+        "wekaexamples.associations",
+        "wekaexamples.attribute_selection",
+        "wekaexamples.book",
+        "wekaexamples.classifiers",
+        "wekaexamples.core"
     ],
     version="0.1.0",
     author='Peter "fracpete" Reutemann',
