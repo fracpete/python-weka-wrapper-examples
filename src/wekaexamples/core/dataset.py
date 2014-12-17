@@ -121,6 +121,8 @@ def main():
     inst = Instance.create_instance(values)
     dataset.add_instance(inst)
     print("Instance #2:\n" + str(inst))
+    inst.set_value(0, 4.0)
+    print("Instance #2 (updated):\n" + str(inst))
     print("Dataset:\n" + str(dataset))
     dataset.delete_with_missing(2)
     print("Dataset (after delete of missing):\n" + str(dataset))
