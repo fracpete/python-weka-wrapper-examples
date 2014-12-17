@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # setup.py
-# Copyright (C) 2014 Fracpete (fracpete at gmail dot com)
+# Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 from setuptools import setup
 
@@ -37,13 +37,16 @@ setup(
     },
     packages=[
         "wekaexamples",
-        "wekaexamples.core",
-        "wekaexamples.plot"
+        "wekaexamples.associations",
+        "wekaexamples.attribute_selection",
+        "wekaexamples.book",
+        "wekaexamples.classifiers",
+        "wekaexamples.core"
     ],
     version="0.1.0",
     author='Peter "fracpete" Reutemann',
-    author_email='fracpete at gmail dot com',
+    author_email='pythonwekawrapper at gmail dot com',
     install_requires=[
-        "python-weka-wrapper>=0.1.13",
+        "python-weka-wrapper>=0.1.14",
     ],
 )
