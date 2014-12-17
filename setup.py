@@ -47,6 +47,6 @@ setup(
     author='Peter "fracpete" Reutemann',
     author_email='pythonwekawrapper at gmail dot com',
     install_requires=[
-        "python-weka-wrapper>=0.1.16",
+        "python-weka-wrapper>=0.1.17",
     ],
 )
