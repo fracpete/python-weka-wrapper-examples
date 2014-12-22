@@ -35,7 +35,7 @@ def main():
     helper.print_info("Loading dataset: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_data = loader.load_file(iris_file)
-    iris_data.class_index = iris_data.num_attributes - 1
+    iris_data.class_is_last()
     helper.print_title("Iris dataset")
     print(iris_data)
     helper.print_title("Iris dataset (incrementally output)")
@@ -92,7 +92,7 @@ def main():
     helper.print_info("Loading dataset incrementally: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_data = loader.load_file(iris_file, incremental=True)
-    iris_data.class_index = iris_data.num_attributes - 1
+    iris_data.class_is_last()
     helper.print_title("Iris dataset")
     print(iris_data)
     for inst in loader:
@@ -130,7 +130,7 @@ def main():
 
     # simple scatterplot of iris dataset: petalwidth x petallength
     iris_data = loader.load_file(iris_file)
-    iris_data.class_index = iris_data.num_attributes - 1
+    iris_data.class_is_last()
     pld.scatter_plot(
         iris_data, iris_data.attribute_by_name("petalwidth").index,
         iris_data.attribute_by_name("petallength").index,
@@ -139,7 +139,7 @@ def main():
 
     # matrix plot of iris dataset
     iris_data = loader.load_file(iris_file)
-    iris_data.class_index = iris_data.num_attributes - 1
+    iris_data.class_is_last()
     pld.matrix_plot(iris_data, percent=50, title="Matrix plot iris", wait=True)
 
 

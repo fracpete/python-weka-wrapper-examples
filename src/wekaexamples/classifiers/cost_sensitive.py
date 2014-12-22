@@ -33,7 +33,7 @@ def main():
     helper.print_info("Loading dataset: " + data_file)
     loader = Loader("weka.core.converters.ArffLoader")
     data = loader.load_file(data_file)
-    data.class_index = data.num_attributes - 1
+    data.class_is_last()
 
     # classifier
     classifier = SingleClassifierEnhancer(

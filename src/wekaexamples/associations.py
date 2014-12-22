@@ -32,7 +32,7 @@ def main():
     helper.print_info("Loading dataset: " + vote_file)
     loader = Loader("weka.core.converters.ArffLoader")
     vote_data = loader.load_file(vote_file)
-    vote_data.class_index = vote_data.num_attributes - 1
+    vote_data.class_is_last()
 
     # train and output associator
     associator = Associator(classname="weka.associations.Apriori", options=["-N", "9", "-I"])

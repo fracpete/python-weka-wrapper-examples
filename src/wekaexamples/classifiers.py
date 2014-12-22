@@ -40,7 +40,7 @@ def main():
     helper.print_info("Loading dataset: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_data = loader.load_file(iris_file)
-    iris_data.class_index = iris_data.num_attributes - 1
+    iris_data.class_is_last()
 
     # classifier from commandline
     helper.print_title("Creating SMO from command-line string")
@@ -91,7 +91,7 @@ def main():
     helper.print_info("Loading dataset: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_inc = loader.load_file(iris_file, incremental=True)
-    iris_inc.class_index = iris_inc.num_attributes - 1
+    iris_inc.class_is_last()
     classifier = Classifier(classname="weka.classifiers.bayes.NaiveBayesUpdateable")
     classifier.build_classifier(iris_inc)
     for inst in loader:
@@ -132,7 +132,7 @@ def main():
     helper.print_info("Loading dataset: " + diabetes_file)
     loader = Loader("weka.core.converters.ArffLoader")
     diabetes_data = loader.load_file(diabetes_file)
-    diabetes_data.class_index = diabetes_data.num_attributes - 1
+    diabetes_data.class_is_last()
     classifier = Classifier(classname="weka.classifiers.bayes.NaiveBayes")
     pred_output = PredictionOutput(
         classname="weka.classifiers.evaluation.output.prediction.PlainText", options=["-distribution"])
@@ -207,7 +207,7 @@ def main():
     helper.print_info("Loading dataset: " + bolts_file)
     loader = Loader("weka.core.converters.ArffLoader")
     bolts_data = loader.load_file(bolts_file)
-    bolts_data.class_index = bolts_data.num_attributes - 1
+    bolts_data.class_is_last()
 
     # build a classifier and output model
     helper.print_title("Training LinearRegression on bolts")

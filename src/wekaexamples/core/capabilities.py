@@ -40,7 +40,7 @@ def main():
     helper.print_info("Loading dataset: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_data = loader.load_file(iris_file)
-    iris_data.class_index = iris_data.num_attributes - 1
+    iris_data.class_is_last()
     data_capabilities = Capabilities.for_instances(iris_data)
     print(data_capabilities)
     print("classifier handles dataset: " + str(capabilities.supports(data_capabilities)))

@@ -97,7 +97,7 @@ def main(args):
     helper.print_info("Loading dataset: " + data_file)
     loader = Loader(classname="weka.core.converters.ArffLoader")
     data = loader.load_file(data_file)
-    data.class_index = data.num_attributes - 1
+    data.class_is_last()
 
     use_classifier(data)
     use_filter(data)

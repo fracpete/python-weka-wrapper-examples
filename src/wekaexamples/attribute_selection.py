@@ -34,7 +34,7 @@ def main():
     helper.print_info("Loading dataset: " + anneal_file)
     loader = Loader("weka.core.converters.ArffLoader")
     anneal_data = loader.load_file(anneal_file)
-    anneal_data.class_index = anneal_data.num_attributes - 1
+    anneal_data.class_is_last()
 
     # perform attribute selection
     helper.print_title("Attribute selection")

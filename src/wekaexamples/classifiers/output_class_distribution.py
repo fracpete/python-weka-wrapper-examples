@@ -37,7 +37,7 @@ def main(args):
     train.class_index = train.num_attributes - 1
     helper.print_info("Loading test: " + args[2])
     test = loader.load_file(args[2])
-    test.class_index = test.num_attributes - 1
+    test.class_is_last()
 
     # classifier
     cls = Classifier(classname="weka.classifiers.trees.J48")
