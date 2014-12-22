@@ -37,10 +37,7 @@ def main():
     data = loader.load_file(iris_file)
 
     # remove class attribute
-    helper.print_info("Removing class attribute")
-    remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "last"])
-    remove.inputformat(data)
-    data = remove.filter(data)
+    data.delete_last_attribute()
 
     # build a clusterer and output model
     helper.print_title("Training SimpleKMeans clusterer")
