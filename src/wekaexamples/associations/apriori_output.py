@@ -38,7 +38,7 @@ def main(args):
     helper.print_info("Loading dataset: " + data_file)
     loader = Loader("weka.core.converters.ArffLoader")
     data = loader.load_file(data_file)
-    data.set_class_index(data.num_attributes - 1)
+    data.class_is_last()
 
     # build Apriori, using last attribute as class attribute
     apriori = Associator(classname="weka.associations.Apriori", options=["-c", "-1"])
