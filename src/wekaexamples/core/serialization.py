@@ -16,6 +16,7 @@
 
 import os
 import tempfile
+import traceback
 import javabridge
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
@@ -35,7 +36,7 @@ def main():
     helper.print_info("Loading dataset: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_data = loader.load_file(iris_file)
-    iris_data.set_class_index(iris_data.num_attributes() - 1)
+    iris_data.class_index = iris_data.num_attributes - 1
 
     # train classifier
     classifier = Classifier("weka.classifiers.trees.J48")
@@ -66,6 +67,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

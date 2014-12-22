@@ -15,6 +15,7 @@
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 import sys
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
@@ -33,10 +34,10 @@ def main(args):
     helper.print_info("Loading train: " + args[1])
     loader = Loader("weka.core.converters.ArffLoader")
     train = loader.load_file(args[1])
-    train.set_class_index(train.num_attributes() - 1)
+    train.set_class_index(train.num_attributes - 1)
     helper.print_info("Loading test: " + args[2])
     test = loader.load_file(args[2])
-    test.set_class_index(test.num_attributes() - 1)
+    test.set_class_index(test.num_attributes - 1)
 
     # classifier
     cls = Classifier(classname="weka.classifiers.trees.J48", options=None)
@@ -44,16 +45,16 @@ def main(args):
 
     # output predictions
     print("# - actual - predicted - error - distribution")
-    for i in xrange(test.num_instances()):
+    for i in xrange(test.num_instances):
         inst = test.get_instance(i)
         pred = cls.classify_instance(inst)
         dist = cls.distribution_for_instance(inst)
         print(
             "%d - %s - %s - %s  - %s" %
             (i+1,
-             inst.get_string_value(inst.get_class_index()),
-             inst.get_class_attribute().value(int(pred)),
-             "yes" if pred != inst.get_value(inst.get_class_index()) else "no",
+             inst.get_string_value(inst.class_index()),
+             inst.class_attribute().value(int(pred)),
+             "yes" if pred != inst.get_value(inst.class_index()) else "no",
              str(dist.tolist())))
 
 
@@ -62,6 +63,6 @@ if __name__ == "__main__":
         jvm.start()
         main(sys.argv)
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

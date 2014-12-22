@@ -14,6 +14,7 @@
 # datagenerators.py
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.datagenerators import DataGenerator
@@ -27,10 +28,10 @@ def main():
     helper.print_title("Generate data")
     generator = DataGenerator(
         classname="weka.datagenerators.classifiers.classification.Agrawal", options=["-n", "10", "-r", "agrawal"])
-    generator.set_dataset_format(generator.define_data_format())
-    print(generator.get_dataset_format())
-    if generator.get_single_mode_flag():
-        for i in xrange(generator.get_num_examples_act()):
+    generator.dataset_format = generator.define_data_format()
+    print(generator.dataset_format)
+    if generator.single_mode_flag():
+        for i in xrange(generator.num_examples_act()):
             print(generator.generate_example())
     else:
         print(generator.generate_examples())
@@ -40,6 +41,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

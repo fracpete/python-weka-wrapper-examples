@@ -15,6 +15,7 @@
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
+import traceback
 import weka.core.jvm as jvm
 import weka.core.utils as utils
 import wekaexamples.helper as helper
@@ -39,7 +40,7 @@ def main():
     helper.print_info("Loading dataset: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_data = loader.load_file(iris_file)
-    iris_data.set_class_index(iris_data.num_attributes() - 1)
+    iris_data.class_index = iris_data.num_attributes - 1
 
     # classifier from commandline
     helper.print_title("Creating SMO from command-line string")
@@ -54,7 +55,7 @@ def main():
     helper.print_title("Creating SMO as KernelClassifier")
     kernel = Kernel(classname="weka.classifiers.functions.supportVector.RBFKernel", options=["-G", "0.001"])
     classifier = KernelClassifier(classname="weka.classifiers.functions.SMO", options=["-M"])
-    classifier.set_kernel(kernel)
+    classifier.kernel = kernel
     classifier.build_classifier(iris_data)
     print("classifier: " + classifier.to_commandline())
     print("model:\n" + str(classifier))
@@ -76,21 +77,21 @@ def main():
     evaluation = Evaluation(iris_data)
     evl = evaluation.test_model(classifier, iris_data)
     print(evl)
-    print(evaluation.to_summary())
+    print(evaluation.summary())
 
     # evaluate model on train/test split
     helper.print_title("Evaluating J48 classifier on iris (random split 66%)")
     classifier = Classifier(classname="weka.classifiers.trees.J48", options=["-C", "0.3"])
     evaluation = Evaluation(iris_data)
     evaluation.evaluate_train_test_split(classifier, iris_data, 66.0, Random(1))
-    print(evaluation.to_summary())
+    print(evaluation.summary())
 
     # load a dataset incrementally and build classifier incrementally
     helper.print_title("Build classifier incrementally on iris")
     helper.print_info("Loading dataset: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_inc = loader.load_file(iris_file, incremental=True)
-    iris_inc.set_class_index(iris_inc.num_attributes() - 1)
+    iris_inc.class_index = iris_inc.num_attributes - 1
     classifier = Classifier(classname="weka.classifiers.bayes.NaiveBayesUpdateable")
     classifier.build_classifier(iris_inc)
     for inst in loader:
@@ -102,18 +103,18 @@ def main():
     # generic FilteredClassifier instantiation
     print("generic FilteredClassifier instantiation")
     meta = SingleClassifierEnhancer(classname="weka.classifiers.meta.FilteredClassifier")
-    meta.set_classifier(Classifier(classname="weka.classifiers.functions.LinearRegression"))
+    meta.classifier = Classifier(classname="weka.classifiers.functions.LinearRegression")
     flter = Filter("weka.filters.unsupervised.attribute.Remove")
-    flter.set_options(["-R", "first"])
+    flter.options = ["-R", "first"]
     meta.set_property("filter", flter.jobject)
     print(meta.to_commandline())
     # direct FilteredClassifier instantiation
     print("direct FilteredClassifier instantiation")
     meta = FilteredClassifier()
-    meta.set_classifier(Classifier(classname="weka.classifiers.functions.LinearRegression"))
+    meta.classifier = Classifier(classname="weka.classifiers.functions.LinearRegression")
     flter = Filter("weka.filters.unsupervised.attribute.Remove")
-    flter.set_options(["-R", "first"])
-    meta.set_filter(flter)
+    flter.options = ["-R", "first"]
+    meta.filter = flter
     print(meta.to_commandline())
     # generic Vote
     print("generic Vote instantiation")
@@ -122,7 +123,7 @@ def main():
         Classifier(classname="weka.classifiers.functions.SMO"),
         Classifier(classname="weka.classifiers.trees.J48")
     ]
-    meta.set_classifiers(classifiers)
+    meta.classifiers = classifiers
     print(meta.to_commandline())
 
     # cross-validate nominal classifier
@@ -131,82 +132,82 @@ def main():
     helper.print_info("Loading dataset: " + diabetes_file)
     loader = Loader("weka.core.converters.ArffLoader")
     diabetes_data = loader.load_file(diabetes_file)
-    diabetes_data.set_class_index(diabetes_data.num_attributes() - 1)
+    diabetes_data.class_index = diabetes_data.num_attributes - 1
     classifier = Classifier(classname="weka.classifiers.bayes.NaiveBayes")
     pred_output = PredictionOutput(
         classname="weka.classifiers.evaluation.output.prediction.PlainText", options=["-distribution"])
     evaluation = Evaluation(diabetes_data)
     evaluation.crossvalidate_model(classifier, diabetes_data, 10, Random(42), output=pred_output)
-    print(evaluation.to_summary())
-    print(evaluation.to_class_details())
-    print(evaluation.to_matrix())
+    print(evaluation.summary())
+    print(evaluation.class_details())
+    print(evaluation.matrix())
     print("areaUnderPRC/0: " + str(evaluation.area_under_prc(0)))
-    print("weightedAreaUnderPRC: " + str(evaluation.weighted_area_under_prc()))
+    print("weightedAreaUnderPRC: " + str(evaluation.weighted_area_under_prc))
     print("areaUnderROC/1: " + str(evaluation.area_under_roc(1)))
-    print("weightedAreaUnderROC: " + str(evaluation.weighted_area_under_roc()))
-    print("avgCost: " + str(evaluation.avg_cost()))
-    print("totalCost: " + str(evaluation.total_cost()))
-    print("confusionMatrix: " + str(evaluation.confusion_matrix()))
-    print("correct: " + str(evaluation.correct()))
-    print("pctCorrect: " + str(evaluation.percent_correct()))
-    print("incorrect: " + str(evaluation.incorrect()))
-    print("pctIncorrect: " + str(evaluation.percent_incorrect()))
-    print("unclassified: " + str(evaluation.unclassified()))
-    print("pctUnclassified: " + str(evaluation.percent_unclassified()))
-    print("coverageOfTestCasesByPredictedRegions: " + str(evaluation.coverage_of_test_cases_by_predicted_regions()))
-    print("sizeOfPredictedRegions: " + str(evaluation.size_of_predicted_regions()))
+    print("weightedAreaUnderROC: " + str(evaluation.weighted_area_under_roc))
+    print("avgCost: " + str(evaluation.avg_cost))
+    print("totalCost: " + str(evaluation.total_cost))
+    print("confusionMatrix: " + str(evaluation.confusion_matrix))
+    print("correct: " + str(evaluation.correct))
+    print("pctCorrect: " + str(evaluation.percent_correct))
+    print("incorrect: " + str(evaluation.incorrect))
+    print("pctIncorrect: " + str(evaluation.percent_incorrect))
+    print("unclassified: " + str(evaluation.unclassified))
+    print("pctUnclassified: " + str(evaluation.percent_unclassified))
+    print("coverageOfTestCasesByPredictedRegions: " + str(evaluation.coverage_of_test_cases_by_predicted_regions))
+    print("sizeOfPredictedRegions: " + str(evaluation.size_of_predicted_regions))
     print("falseNegativeRate: " + str(evaluation.false_negative_rate(1)))
-    print("weightedFalseNegativeRate: " + str(evaluation.weighted_false_negative_rate()))
+    print("weightedFalseNegativeRate: " + str(evaluation.weighted_false_negative_rate))
     print("numFalseNegatives: " + str(evaluation.num_false_negatives(1)))
     print("trueNegativeRate: " + str(evaluation.true_negative_rate(1)))
-    print("weightedTrueNegativeRate: " + str(evaluation.weighted_true_negative_rate()))
+    print("weightedTrueNegativeRate: " + str(evaluation.weighted_true_negative_rate))
     print("numTrueNegatives: " + str(evaluation.num_true_negatives(1)))
     print("falsePositiveRate: " + str(evaluation.false_positive_rate(1)))
-    print("weightedFalsePositiveRate: " + str(evaluation.weighted_false_positive_rate()))
+    print("weightedFalsePositiveRate: " + str(evaluation.weighted_false_positive_rate))
     print("numFalsePositives: " + str(evaluation.num_false_positives(1)))
     print("truePositiveRate: " + str(evaluation.true_positive_rate(1)))
-    print("weightedTruePositiveRate: " + str(evaluation.weighted_true_positive_rate()))
+    print("weightedTruePositiveRate: " + str(evaluation.weighted_true_positive_rate))
     print("numTruePositives: " + str(evaluation.num_true_positives(1)))
     print("fMeasure: " + str(evaluation.f_measure(1)))
-    print("weightedFMeasure: " + str(evaluation.weighted_f_measure()))
-    print("unweightedMacroFmeasure: " + str(evaluation.unweighted_macro_f_measure()))
-    print("unweightedMicroFmeasure: " + str(evaluation.unweighted_micro_f_measure()))
+    print("weightedFMeasure: " + str(evaluation.weighted_f_measure))
+    print("unweightedMacroFmeasure: " + str(evaluation.unweighted_macro_f_measure))
+    print("unweightedMicroFmeasure: " + str(evaluation.unweighted_micro_f_measure))
     print("precision: " + str(evaluation.precision(1)))
-    print("weightedPrecision: " + str(evaluation.weighted_precision()))
+    print("weightedPrecision: " + str(evaluation.weighted_precision))
     print("recall: " + str(evaluation.recall(1)))
-    print("weightedRecall: " + str(evaluation.weighted_recall()))
-    print("kappa: " + str(evaluation.kappa()))
-    print("KBInformation: " + str(evaluation.kb_information()))
-    print("KBMeanInformation: " + str(evaluation.kb_mean_information()))
-    print("KBRelativeInformation: " + str(evaluation.kb_relative_information()))
-    print("SFEntropyGain: " + str(evaluation.sf_entropy_gain()))
-    print("SFMeanEntropyGain: " + str(evaluation.sf_mean_entropy_gain()))
-    print("SFMeanPriorEntropy: " + str(evaluation.sf_mean_prior_entropy()))
-    print("SFMeanSchemeEntropy: " + str(evaluation.sf_mean_scheme_entropy()))
+    print("weightedRecall: " + str(evaluation.weighted_recall))
+    print("kappa: " + str(evaluation.kappa))
+    print("KBInformation: " + str(evaluation.kb_information))
+    print("KBMeanInformation: " + str(evaluation.kb_mean_information))
+    print("KBRelativeInformation: " + str(evaluation.kb_relative_information))
+    print("SFEntropyGain: " + str(evaluation.sf_entropy_gain))
+    print("SFMeanEntropyGain: " + str(evaluation.sf_mean_entropy_gain))
+    print("SFMeanPriorEntropy: " + str(evaluation.sf_mean_prior_entropy))
+    print("SFMeanSchemeEntropy: " + str(evaluation.sf_mean_scheme_entropy))
     print("matthewsCorrelationCoefficient: " + str(evaluation.matthews_correlation_coefficient(1)))
-    print("weightedMatthewsCorrelation: " + str(evaluation.weighted_matthews_correlation()))
+    print("weightedMatthewsCorrelation: " + str(evaluation.weighted_matthews_correlation))
     #print("class priors: " + str(evaluation.get_class_priors()))
-    print("numInstances: " + str(evaluation.num_instances()))
-    print("meanAbsoluteError: " + str(evaluation.mean_absolute_error()))
-    print("meanPriorAbsoluteError: " + str(evaluation.mean_prior_absolute_error()))
-    print("relativeAbsoluteError: " + str(evaluation.relative_absolute_error()))
-    print("rootMeanSquaredError: " + str(evaluation.root_mean_squared_error()))
-    print("rootMeanPriorSquaredError: " + str(evaluation.root_mean_prior_squared_error()))
-    print("rootRelativeSquaredError: " + str(evaluation.root_relative_squared_error()))
+    print("numInstances: " + str(evaluation.num_instances))
+    print("meanAbsoluteError: " + str(evaluation.mean_absolute_error))
+    print("meanPriorAbsoluteError: " + str(evaluation.mean_prior_absolute_error))
+    print("relativeAbsoluteError: " + str(evaluation.relative_absolute_error))
+    print("rootMeanSquaredError: " + str(evaluation.root_mean_squared_error))
+    print("rootMeanPriorSquaredError: " + str(evaluation.root_mean_prior_squared_error))
+    print("rootRelativeSquaredError: " + str(evaluation.root_relative_squared_error))
     print("prediction output:\n" + str(pred_output))
     plot_cls.plot_roc(
         evaluation, title="ROC diabetes",
-        class_index=range(0, diabetes_data.get_class_attribute().num_values()), wait=False)
+        class_index=range(0, diabetes_data.class_attribute.num_values), wait=False)
     plot_cls.plot_prc(
         evaluation, title="PRC diabetes",
-        class_index=range(0, diabetes_data.get_class_attribute().num_values()), wait=False)
+        class_index=range(0, diabetes_data.class_attribute.num_values), wait=False)
 
     # load a numeric dataset
     bolts_file = helper.get_data_dir() + os.sep + "bolts.arff"
     helper.print_info("Loading dataset: " + bolts_file)
     loader = Loader("weka.core.converters.ArffLoader")
     bolts_data = loader.load_file(bolts_file)
-    bolts_data.set_class_index(bolts_data.num_attributes() - 1)
+    bolts_data.class_index = bolts_data.num_attributes - 1
 
     # build a classifier and output model
     helper.print_title("Training LinearRegression on bolts")
@@ -219,18 +220,17 @@ def main():
     classifier = Classifier(classname="weka.classifiers.functions.LinearRegression", options=["-S", "1", "-C"])
     evaluation = Evaluation(bolts_data)
     evaluation.crossvalidate_model(classifier, bolts_data, 10, Random(42))
-    print(evaluation.to_summary())
-    print("correlationCoefficient: " + str(evaluation.correlation_coefficient()))
-    print("errorRate: " + str(evaluation.error_rate()))
+    print(evaluation.summary())
+    print("correlationCoefficient: " + str(evaluation.correlation_coefficient))
+    print("errorRate: " + str(evaluation.error_rate))
     helper.print_title("Header - bolts")
-    print(str(evaluation.header()))
+    print(str(evaluation.header))
     helper.print_title("Predictions on bolts")
     i = 0
-    preds = evaluation.predictions()
-    for pred in preds:
+    for pred in evaluation.predictions:
         i += 1
-        print(str(i) + ": " + str(pred) + " -> error=" + str(pred.error()))
-    plot_cls.plot_classifier_errors(preds, wait=True)
+        print(str(i) + ": " + str(pred) + " -> error=" + str(pred.error))
+    plot_cls.plot_classifier_errors(evaluation.predictions, wait=True)
 
 
 if __name__ == "__main__":
@@ -238,6 +238,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

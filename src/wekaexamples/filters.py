@@ -15,6 +15,7 @@
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
@@ -35,7 +36,7 @@ def main():
     # remove class attribute
     helper.print_info("Removing class attribute")
     remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "last"])
-    remove.set_inputformat(data)
+    remove.inputformat(data)
     filtered = remove.filter(data)
 
     # use MultiFilter
@@ -43,8 +44,8 @@ def main():
     remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
     std = Filter(classname="weka.filters.unsupervised.attribute.Standardize")
     multi = MultiFilter()
-    multi.set_filters([remove, std])
-    multi.set_inputformat(data)
+    multi.filters = [remove, std]
+    multi.inputformat(data)
     filtered_multi = multi.filter(data)
 
     # output datasets
@@ -60,6 +61,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

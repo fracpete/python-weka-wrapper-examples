@@ -15,6 +15,7 @@
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
@@ -38,7 +39,7 @@ def main():
     # remove class attribute
     helper.print_info("Removing class attribute")
     remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "last"])
-    remove.set_inputformat(data)
+    remove.inputformat(data)
     data = remove.filter(data)
 
     # build a clusterer and output model
@@ -50,9 +51,9 @@ def main():
     evaluation = ClusterEvaluation()
     evaluation.set_model(clusterer)
     evaluation.test_model(data)
-    print("# clusters: " + str(evaluation.get_num_clusters()))
-    print("log likelihood: " + str(evaluation.get_log_likelihood()))
-    print("cluster assignments:\n" + str(evaluation.get_cluster_assignments()))
+    print("# clusters: " + str(evaluation.num_clusters()))
+    print("log likelihood: " + str(evaluation.log_likelihood()))
+    print("cluster assignments:\n" + str(evaluation.cluster_assignments()))
     plc.plot_cluster_assignments(evaluation, data, inst_no=True)
 
     # using a filtered clusterer
@@ -62,8 +63,8 @@ def main():
     clusterer = Clusterer(classname="weka.clusterers.SimpleKMeans", options=["-N", "3"])
     remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "last"])
     fclusterer = FilteredClusterer()
-    fclusterer.set_clusterer(clusterer)
-    fclusterer.set_filter(remove)
+    fclusterer.clusterer = clusterer
+    fclusterer.filter = remove
     fclusterer.build_clusterer(data)
     print(fclusterer)
 
@@ -73,8 +74,8 @@ def main():
     iris_inc = loader.load_file(iris_file, incremental=True)
     clusterer = Clusterer("weka.clusterers.Cobweb")
     remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "last"])
-    remove.set_inputformat(iris_inc)
-    iris_filtered = remove.get_outputformat()
+    remove.inputformat(iris_inc)
+    iris_filtered = remove.outputformat()
     clusterer.build_clusterer(iris_filtered)
     for inst in loader:
         remove.input(inst)
@@ -92,6 +93,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

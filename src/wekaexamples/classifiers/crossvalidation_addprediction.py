@@ -15,6 +15,7 @@
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.classes import Random
@@ -34,7 +35,7 @@ def main():
     helper.print_info("Loading dataset: " + data_file)
     loader = Loader("weka.core.converters.ArffLoader")
     data = loader.load_file(data_file)
-    data.set_class_index(data.num_attributes() - 1)
+    data.set_class_index(data.num_attributes - 1)
 
     # classifier
     classifier = Classifier(classname="weka.classifiers.trees.J48", options=None)
@@ -45,7 +46,7 @@ def main():
     rnd = Random(seed)
     rand_data = Instances.copy_instances(data)
     rand_data.randomize(rnd)
-    if rand_data.get_class_attribute().is_nominal():
+    if rand_data.class_attribute().is_nominal():
         rand_data.stratify(folds)
 
     # perform cross-validation and add predictions
@@ -74,17 +75,17 @@ def main():
         pred = addcls.filter(test)
         if predicted_data is None:
             predicted_data = Instances.template_instances(pred, 0)
-        for n in xrange(pred.num_instances()):
+        for n in xrange(pred.num_instances):
             predicted_data.add_instance(pred.get_instance(n))
 
     print("")
     print("=== Setup ===")
     print("Classifier: " + cls.to_commandline())
-    print("Dataset: " + data.get_relationname())
+    print("Dataset: " + data.relationname())
     print("Folds: " + str(folds))
     print("Seed: " + str(seed))
     print("")
-    print(evaluation.to_summary("=== " + str(folds) + " -fold Cross-Validation ==="))
+    print(evaluation.summary("=== " + str(folds) + " -fold Cross-Validation ==="))
     print("")
     print(predicted_data)
 
@@ -94,6 +95,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

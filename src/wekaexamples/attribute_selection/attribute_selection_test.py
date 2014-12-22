@@ -16,6 +16,7 @@
 
 import os
 import sys
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
@@ -43,7 +44,7 @@ def use_classifier(data):
     classifier.set_property("search", assearch.jobject)
     evaluation = Evaluation(data)
     evaluation.crossvalidate_model(classifier, data, 10, Random(1))
-    print(evaluation.to_summary())
+    print(evaluation.summary())
 
 
 def use_filter(data):
@@ -96,7 +97,7 @@ def main(args):
     helper.print_info("Loading dataset: " + data_file)
     loader = Loader("weka.core.converters.ArffLoader")
     data = loader.load_file(data_file)
-    data.set_class_index(data.num_attributes() - 1)
+    data.set_class_index(data.num_attributes - 1)
 
     use_classifier(data)
     use_filter(data)
@@ -107,6 +108,6 @@ if __name__ == "__main__":
         jvm.start()
         main(sys.argv)
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

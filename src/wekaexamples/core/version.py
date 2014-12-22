@@ -14,6 +14,7 @@
 # version.py
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
+import traceback
 import weka.core.jvm as jvm
 import weka.core.version as version
 
@@ -31,6 +32,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

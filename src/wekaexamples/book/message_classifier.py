@@ -16,6 +16,7 @@
 
 import os
 import sys
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
@@ -52,6 +53,6 @@ if __name__ == "__main__":
         jvm.start()
         main(sys.argv)
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

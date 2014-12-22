@@ -15,6 +15,7 @@
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
@@ -31,7 +32,7 @@ def main():
     helper.print_info("Loading dataset: " + vote_file)
     loader = Loader("weka.core.converters.ArffLoader")
     vote_data = loader.load_file(vote_file)
-    vote_data.set_class_index(vote_data.num_attributes() - 1)
+    vote_data.class_index = vote_data.num_attributes - 1
 
     # train and output associator
     associator = Associator(classname="weka.associations.Apriori", options=["-N", "9", "-I"])
@@ -43,6 +44,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

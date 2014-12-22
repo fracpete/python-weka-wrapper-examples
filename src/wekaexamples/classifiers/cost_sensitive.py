@@ -15,6 +15,7 @@
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.classes import Random
@@ -32,7 +33,7 @@ def main():
     helper.print_info("Loading dataset: " + data_file)
     loader = Loader("weka.core.converters.ArffLoader")
     data = loader.load_file(data_file)
-    data.set_class_index(data.num_attributes() - 1)
+    data.set_class_index(data.num_attributes - 1)
 
     # classifier
     classifier = SingleClassifierEnhancer(
@@ -49,15 +50,15 @@ def main():
     print("")
     print("=== Setup ===")
     print("Classifier: " + classifier.to_commandline())
-    print("Dataset: " + data.get_relationname())
+    print("Dataset: " + data.relationname())
     print("")
-    print(evaluation.to_summary("=== " + str(folds) + " -fold Cross-Validation ==="))
+    print(evaluation.summary("=== " + str(folds) + " -fold Cross-Validation ==="))
 
 if __name__ == "__main__":
     try:
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

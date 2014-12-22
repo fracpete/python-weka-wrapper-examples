@@ -15,6 +15,7 @@
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
@@ -33,7 +34,7 @@ def main():
     helper.print_info("Loading dataset: " + anneal_file)
     loader = Loader("weka.core.converters.ArffLoader")
     anneal_data = loader.load_file(anneal_file)
-    anneal_data.set_class_index(anneal_data.num_attributes() - 1)
+    anneal_data.class_index = anneal_data.num_attributes - 1
 
     # perform attribute selection
     helper.print_title("Attribute selection")
@@ -67,6 +68,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

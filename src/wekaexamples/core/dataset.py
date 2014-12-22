@@ -15,6 +15,7 @@
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
@@ -34,7 +35,7 @@ def main():
     helper.print_info("Loading dataset: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_data = loader.load_file(iris_file)
-    iris_data.set_class_index(iris_data.num_attributes() - 1)
+    iris_data.class_index = iris_data.num_attributes - 1
     helper.print_title("Iris dataset")
     print(iris_data)
     helper.print_title("Iris dataset (incrementally output)")
@@ -47,12 +48,12 @@ def main():
         print(a)
     helper.print_title("Instance at #0")
     print(iris_data.get_instance(0))
-    print(iris_data.get_instance(0).get_values())
-    print("Attribute stats (first):\n" + str(iris_data.get_attribute_stats(0)))
-    print("total count (first attribute):\n" + str(iris_data.get_attribute_stats(0).total_count()))
-    print("numeric stats (first attribute):\n" + str(iris_data.get_attribute_stats(0).numeric_stats()))
+    print(iris_data.get_instance(0).values)
+    print("Attribute stats (first):\n" + str(iris_data.attribute_stats(0)))
+    print("total count (first attribute):\n" + str(iris_data.attribute_stats(0).total_count))
+    print("numeric stats (first attribute):\n" + str(iris_data.attribute_stats(0).numeric_stats))
     print("nominal counts (last attribute):\n"
-          + str(iris_data.get_attribute_stats(iris_data.num_attributes() - 1).nominal_counts()))
+          + str(iris_data.attribute_stats(iris_data.num_attributes - 1).nominal_counts))
     helper.print_title("Instance values at #0")
     for v in iris_data.get_instance(0):
         print(v)
@@ -71,11 +72,11 @@ def main():
     # merge datasets
     helper.print_title("merge datasets")
     data1 = Instances.copy_instances(iris_data, 0, 2)
-    data1.set_class_index(-1)
+    data1.class_index = -1
     data1.delete_attribute(1)
     data1.delete_attribute(0)
     data2 = Instances.copy_instances(iris_data, 0, 2)
-    data2.set_class_index(-1)
+    data2.class_index = -1
     data2.delete_attribute(4)
     data2.delete_attribute(3)
     data2.delete_attribute(2)
@@ -91,7 +92,7 @@ def main():
     helper.print_info("Loading dataset incrementally: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_data = loader.load_file(iris_file, incremental=True)
-    iris_data.set_class_index(iris_data.num_attributes() - 1)
+    iris_data.class_index = iris_data.num_attributes - 1
     helper.print_title("Iris dataset")
     print(iris_data)
     for inst in loader:
@@ -129,16 +130,16 @@ def main():
 
     # simple scatterplot of iris dataset: petalwidth x petallength
     iris_data = loader.load_file(iris_file)
-    iris_data.set_class_index(iris_data.num_attributes() - 1)
+    iris_data.class_index = iris_data.num_attributes - 1
     pld.scatter_plot(
-        iris_data, iris_data.get_attribute_by_name("petalwidth").get_index(),
-        iris_data.get_attribute_by_name("petallength").get_index(),
+        iris_data, iris_data.attribute_by_name("petalwidth").index,
+        iris_data.attribute_by_name("petallength").index,
         percent=50,
         wait=False)
 
     # matrix plot of iris dataset
     iris_data = loader.load_file(iris_file)
-    iris_data.set_class_index(iris_data.num_attributes() - 1)
+    iris_data.class_index = iris_data.num_attributes - 1
     pld.matrix_plot(iris_data, percent=50, title="Matrix plot iris", wait=True)
 
 
@@ -147,6 +148,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

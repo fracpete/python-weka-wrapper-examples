@@ -15,6 +15,7 @@
 # Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
+import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.capabilities import Capability
@@ -31,7 +32,7 @@ def main():
     classifier = Classifier("weka.classifiers.trees.J48")
 
     helper.print_title("Capabilities")
-    capabilities = classifier.get_capabilities()
+    capabilities = classifier.capabilities()
     print(capabilities)
 
     # load a dataset
@@ -39,7 +40,7 @@ def main():
     helper.print_info("Loading dataset: " + iris_file)
     loader = Loader("weka.core.converters.ArffLoader")
     iris_data = loader.load_file(iris_file)
-    iris_data.set_class_index(iris_data.num_attributes() - 1)
+    iris_data.class_index = iris_data.num_attributes - 1
     data_capabilities = Capabilities.for_instances(iris_data)
     print(data_capabilities)
     print("classifier handles dataset: " + str(capabilities.supports(data_capabilities)))
@@ -48,7 +49,7 @@ def main():
     helper.print_title("Disable/Enable")
     capability = Capability.parse("UNARY_ATTRIBUTES")
     capabilities.disable(capability)
-    capabilities.set_min_instances(10)
+    capabilities.min_instances = 10
     print("Removing: " + str(capability))
     print(capabilities)
 
@@ -58,6 +59,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()

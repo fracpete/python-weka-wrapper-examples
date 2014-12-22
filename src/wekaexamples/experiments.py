@@ -16,6 +16,7 @@
 
 import os
 import tempfile
+import traceback
 import weka.core.jvm as jvm
 import weka.core.converters as converters
 import wekaexamples.helper as helper
@@ -50,9 +51,9 @@ def main():
     data = loader.load_file(outfile)
     matrix = ResultMatrix("weka.experiment.ResultMatrixPlainText")
     tester = Tester("weka.experiment.PairedCorrectedTTester")
-    tester.set_resultmatrix(matrix)
-    comparison_col = data.get_attribute_by_name("Percent_correct").get_index()
-    tester.set_instances(data)
+    tester.resultmatrix = matrix
+    comparison_col = data.attribute_by_name("Percent_correct").index
+    tester.instances = data
     print(tester.header(comparison_col))
     print(tester.multi_resultset_full(0, comparison_col))
 
@@ -80,9 +81,9 @@ def main():
     data = loader.load_file(outfile)
     matrix = ResultMatrix("weka.experiment.ResultMatrixPlainText")
     tester = Tester("weka.experiment.PairedCorrectedTTester")
-    tester.set_resultmatrix(matrix)
-    comparison_col = data.get_attribute_by_name("Correlation_coefficient").get_index()
-    tester.set_instances(data)
+    tester.resultmatrix = matrix
+    comparison_col = data.attribute_by_name("Correlation_coefficient").index
+    tester.instances = data
     print(tester.header(comparison_col))
     print(tester.multi_resultset_full(0, comparison_col))
 
@@ -91,6 +92,6 @@ if __name__ == "__main__":
         jvm.start()
         main()
     except Exception, e:
-        print(e)
+        print(traceback.format_exc())
     finally:
         jvm.stop()
