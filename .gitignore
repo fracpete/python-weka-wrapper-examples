@@ -62,3 +62,7 @@ target/
 *.nja
 .idea
 
+
+# other
+generated.arff
+
