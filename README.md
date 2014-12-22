@@ -7,7 +7,7 @@ Some of the examples are modelled after the original Examples for Weka (https://
 Requirements:
 
 * Python
- * python-weka-wrapper (>= 0.1.17)
+ * python-weka-wrapper (>= 0.2.0)
 * JDK 1.6+
 
 The Python libraries you can either install using `pip install <name>` or use
