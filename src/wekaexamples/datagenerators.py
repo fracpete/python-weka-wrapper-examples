@@ -30,8 +30,8 @@ def main():
         classname="weka.datagenerators.classifiers.classification.Agrawal", options=["-n", "10", "-r", "agrawal"])
     generator.dataset_format = generator.define_data_format()
     print(generator.dataset_format)
-    if generator.single_mode_flag():
-        for i in xrange(generator.num_examples_act()):
+    if generator.single_mode_flag:
+        for i in xrange(generator.num_examples_act):
             print(generator.generate_example())
     else:
         print(generator.generate_examples())
