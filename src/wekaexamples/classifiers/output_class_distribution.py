@@ -32,15 +32,15 @@ def main(args):
 
     # load a dataset
     helper.print_info("Loading train: " + args[1])
-    loader = Loader("weka.core.converters.ArffLoader")
+    loader = Loader(classname="weka.core.converters.ArffLoader")
     train = loader.load_file(args[1])
-    train.set_class_index(train.num_attributes - 1)
+    train.class_index = train.num_attributes - 1
     helper.print_info("Loading test: " + args[2])
     test = loader.load_file(args[2])
-    test.set_class_index(test.num_attributes - 1)
+    test.class_index = test.num_attributes - 1
 
     # classifier
-    cls = Classifier(classname="weka.classifiers.trees.J48", options=None)
+    cls = Classifier(classname="weka.classifiers.trees.J48")
     cls.build_classifier(train)
 
     # output predictions
@@ -52,9 +52,9 @@ def main(args):
         print(
             "%d - %s - %s - %s  - %s" %
             (i+1,
-             inst.get_string_value(inst.class_index()),
-             inst.class_attribute().value(int(pred)),
-             "yes" if pred != inst.get_value(inst.class_index()) else "no",
+             inst.get_string_value(inst.class_index),
+             inst.class_attribute.value(int(pred)),
+             "yes" if pred != inst.get_value(inst.class_index) else "no",
              str(dist.tolist())))
 
 

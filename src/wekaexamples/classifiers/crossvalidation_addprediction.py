@@ -35,10 +35,10 @@ def main():
     helper.print_info("Loading dataset: " + data_file)
     loader = Loader("weka.core.converters.ArffLoader")
     data = loader.load_file(data_file)
-    data.set_class_index(data.num_attributes - 1)
+    data.class_index = data.num_attributes - 1
 
     # classifier
-    classifier = Classifier(classname="weka.classifiers.trees.J48", options=None)
+    classifier = Classifier(classname="weka.classifiers.trees.J48")
 
     # randomize data
     folds = 10
@@ -46,7 +46,7 @@ def main():
     rnd = Random(seed)
     rand_data = Instances.copy_instances(data)
     rand_data.randomize(rnd)
-    if rand_data.class_attribute().is_nominal():
+    if rand_data.class_attribute.is_nominal:
         rand_data.stratify(folds)
 
     # perform cross-validation and add predictions
@@ -70,7 +70,7 @@ def main():
             options=["-classification", "-distribution", "-error"])
         # setting the java object directory avoids issues with correct quoting in option array
         addcls.set_property("classifier", Classifier.make_copy(classifier))
-        addcls.set_inputformat(train)
+        addcls.inputformat(train)
         addcls.filter(train)  # trains the classifier
         pred = addcls.filter(test)
         if predicted_data is None:
@@ -80,8 +80,8 @@ def main():
 
     print("")
     print("=== Setup ===")
-    print("Classifier: " + cls.to_commandline())
-    print("Dataset: " + data.relationname())
+    print("Classifier: " + classifier.to_commandline())
+    print("Dataset: " + data.relationname)
     print("Folds: " + str(folds))
     print("Seed: " + str(seed))
     print("")

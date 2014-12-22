@@ -32,7 +32,7 @@ def main():
     classifier = Classifier("weka.classifiers.trees.J48")
 
     helper.print_title("Capabilities")
-    capabilities = classifier.capabilities()
+    capabilities = classifier.capabilities
     print(capabilities)
 
     # load a dataset

@@ -33,14 +33,14 @@ def main():
     helper.print_info("Loading dataset: " + data_file)
     loader = Loader("weka.core.converters.ArffLoader")
     data = loader.load_file(data_file)
-    data.set_class_index(data.num_attributes - 1)
+    data.class_index = data.num_attributes - 1
 
     # classifier
     classifier = SingleClassifierEnhancer(
         classname="weka.classifiers.meta.CostSensitiveClassifier",
         options=["-cost-matrix", "[0 1; 2 0]", "-S", "2"])
     base = Classifier(classname="weka.classifiers.trees.J48", options=["-C", "0.3"])
-    classifier.set_classifier(base)
+    classifier.classifier = base
 
     folds = 10
     evaluation = Evaluation(data)
@@ -50,7 +50,7 @@ def main():
     print("")
     print("=== Setup ===")
     print("Classifier: " + classifier.to_commandline())
-    print("Dataset: " + data.relationname())
+    print("Dataset: " + data.relationname)
     print("")
     print(evaluation.summary("=== " + str(folds) + " -fold Cross-Validation ==="))
 

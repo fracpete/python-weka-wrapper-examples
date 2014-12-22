@@ -54,13 +54,13 @@ def use_filter(data):
     :type data: Instances
     """
     print("\n2. Filter")
-    filter = Filter(classname="weka.filters.supervised.attribute.AttributeSelection")
+    flter = Filter(classname="weka.filters.supervised.attribute.AttributeSelection")
     aseval = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval")
     assearch = ASSearch(classname="weka.attributeSelection.GreedyStepwise", options=["-B"])
-    filter.set_property("evaluator", aseval.jobject)
-    filter.set_property("search", assearch.jobject)
-    filter.set_inputformat(data)
-    filtered = filter.filter(data)
+    flter.set_property("evaluator", aseval.jobject)
+    flter.set_property("search", assearch.jobject)
+    flter.inputformat(data)
+    filtered = flter.filter(data)
     print(str(filtered))
 
 
@@ -74,10 +74,10 @@ def use_low_level(data):
     attsel = AttributeSelection()
     aseval = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval")
     assearch = ASSearch(classname="weka.attributeSelection.GreedyStepwise", options=["-B"])
-    attsel.set_property("evaluator", aseval.jobject)
-    attsel.set_property("search", assearch.jobject)
+    attsel.jwrapper().setEvaluator(aseval.jobject)
+    attsel.jwrapper().setSearch(assearch.jobject)
     attsel.select_attributes(data)
-    indices = attsel.get_selected_attributes()
+    indices = attsel.selected_attributes
     print("selected attribute indices (starting with 0):\n" + str(indices.tolist()))
 
 
@@ -95,9 +95,9 @@ def main(args):
     else:
         data_file = args[1]
     helper.print_info("Loading dataset: " + data_file)
-    loader = Loader("weka.core.converters.ArffLoader")
+    loader = Loader(classname="weka.core.converters.ArffLoader")
     data = loader.load_file(data_file)
-    data.set_class_index(data.num_attributes - 1)
+    data.class_index = data.num_attributes - 1
 
     use_classifier(data)
     use_filter(data)

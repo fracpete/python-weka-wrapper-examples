@@ -38,10 +38,10 @@ def main(args):
     helper.print_info("Loading dataset: " + data_file)
     loader = Loader(classname="weka.core.converters.ArffLoader")
     data = loader.load_file(data_file, incremental=True)
-    data.set_class_index(data.num_attributes - 1)
+    data.class_index = data.num_attributes - 1
 
     # classifier
-    nb = Classifier(classname="weka.classifiers.bayes.NaiveBayesUpdateable", options=None)
+    nb = Classifier(classname="weka.classifiers.bayes.NaiveBayesUpdateable")
     nb.build_classifier(data)
 
     # train incrementally

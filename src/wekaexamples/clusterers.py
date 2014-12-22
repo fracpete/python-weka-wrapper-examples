@@ -51,9 +51,9 @@ def main():
     evaluation = ClusterEvaluation()
     evaluation.set_model(clusterer)
     evaluation.test_model(data)
-    print("# clusters: " + str(evaluation.num_clusters()))
-    print("log likelihood: " + str(evaluation.log_likelihood()))
-    print("cluster assignments:\n" + str(evaluation.cluster_assignments()))
+    print("# clusters: " + str(evaluation.num_clusters))
+    print("log likelihood: " + str(evaluation.log_likelihood))
+    print("cluster assignments:\n" + str(evaluation.cluster_assignments))
     plc.plot_cluster_assignments(evaluation, data, inst_no=True)
 
     # using a filtered clusterer
@@ -84,8 +84,8 @@ def main():
     clusterer.update_finished()
     print(clusterer.to_commandline())
     print(clusterer)
-    print(clusterer.graph())
-    plg.plot_dot_graph(clusterer.graph())
+    print(clusterer.graph)
+    plg.plot_dot_graph(clusterer.graph)
 
 
 if __name__ == "__main__":

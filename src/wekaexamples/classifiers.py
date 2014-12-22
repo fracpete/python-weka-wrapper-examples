@@ -69,8 +69,8 @@ def main():
     classifier.set_property("confidenceFactor", types.double_to_float(0.3))
     classifier.build_classifier(iris_data)
     print(classifier)
-    print(classifier.graph())
-    plot_graph.plot_dot_graph(classifier.graph())
+    print(classifier.graph)
+    plot_graph.plot_dot_graph(classifier.graph)
 
     # evaluate model on test set
     helper.print_title("Evaluating J48 classifier on iris")
