@@ -186,7 +186,7 @@ def main():
     print("SFMeanSchemeEntropy: " + str(evaluation.sf_mean_scheme_entropy))
     print("matthewsCorrelationCoefficient: " + str(evaluation.matthews_correlation_coefficient(1)))
     print("weightedMatthewsCorrelation: " + str(evaluation.weighted_matthews_correlation))
-    #print("class priors: " + str(evaluation.get_class_priors()))
+    print("class priors: " + str(evaluation.class_priors))
     print("numInstances: " + str(evaluation.num_instances))
     print("meanAbsoluteError: " + str(evaluation.mean_absolute_error))
     print("meanPriorAbsoluteError: " + str(evaluation.mean_prior_absolute_error))
@@ -230,7 +230,14 @@ def main():
     for pred in evaluation.predictions:
         i += 1
         print(str(i) + ": " + str(pred) + " -> error=" + str(pred.error))
-    plot_cls.plot_classifier_errors(evaluation.predictions, wait=True)
+    plot_cls.plot_classifier_errors(evaluation.predictions, wait=False)
+
+    # learning curve
+    cls = [
+        Classifier(classname="weka.classifiers.trees.J48"),
+        Classifier(classname="weka.classifiers.bayes.NaiveBayesUpdateable")]
+    plot_cls.plot_learning_curve(
+        cls, diabetes_data, increments=0.05, label_template="[#] !", metric="percent_correct", wait=True)
 
 
 if __name__ == "__main__":
