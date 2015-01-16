@@ -89,7 +89,7 @@ def main():
     print(tester.multi_resultset_full(0, comparison_col))
 
     # plot
-    plot_exp.plot_experiment(matrix, title="Random split (CC)", wait=True)
+    plot_exp.plot_experiment(matrix, title="Random split", measure="Correlation coefficient", wait=True)
 
 if __name__ == "__main__":
     try:
