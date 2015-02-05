@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # experiments.py
-# Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2015 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import tempfile
@@ -22,6 +22,7 @@ import weka.core.converters as converters
 import wekaexamples.helper as helper
 from weka.classifiers import Classifier
 from weka.experiments import SimpleCrossValidationExperiment, SimpleRandomSplitExperiment, Tester, ResultMatrix
+import weka.plot.experiments as plot_exp
 
 
 def main():
@@ -86,6 +87,9 @@ def main():
     tester.instances = data
     print(tester.header(comparison_col))
     print(tester.multi_resultset_full(0, comparison_col))
+
+    # plot
+    plot_exp.plot_experiment(matrix, title="Random split", measure="Correlation coefficient", wait=True)
 
 if __name__ == "__main__":
     try:
