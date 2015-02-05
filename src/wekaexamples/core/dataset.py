@@ -74,7 +74,7 @@ def main():
     data1 = Instances.copy_instances(iris_data, 0, 2)
     data1.class_index = -1
     data1.delete_attribute(1)
-    data1.delete_first_attribute(0)
+    data1.delete_first_attribute()
     data2 = Instances.copy_instances(iris_data, 0, 2)
     data2.class_index = -1
     data2.delete_attribute(4)
