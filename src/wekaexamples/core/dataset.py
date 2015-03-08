@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # dataset.py
-# Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2015 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import traceback
@@ -127,6 +127,11 @@ def main():
     print("Dataset:\n" + str(dataset))
     dataset.delete_with_missing(2)
     print("Dataset (after delete of missing):\n" + str(dataset))
+    values = [(1, date_att.parse_date("2014-07-11"))]
+    inst = Instance.create_instance(values, classname="weka.core.SparseInstance", max_values=3)
+    print("sparse Instance:\n" + str(inst))
+    dataset.add_instance(inst)
+    print("dataset with mixed dense/sparse instance objects:\n" + str(dataset))
 
     # simple scatterplot of iris dataset: petalwidth x petallength
     iris_data = loader.load_file(iris_file)
