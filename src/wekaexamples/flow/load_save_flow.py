@@ -43,6 +43,10 @@ def main():
     console.options["prefix"] = "Match: "
     flow.actors.append(console)
 
+    # print flow
+    flow.setup()
+    print(flow.tree)
+
     # save the flow
     fname = tempfile.gettempdir() + os.sep + "simpleflow.json"
     Flow.save(flow, fname)

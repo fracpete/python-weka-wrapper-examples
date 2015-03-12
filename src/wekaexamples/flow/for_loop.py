@@ -54,6 +54,7 @@ def main():
     # run the flow
     msg = flow.setup()
     if msg is None:
+        print(flow.tree)
         msg = flow.execute()
         if msg is not None:
             print("Error executing flow:\n" + msg)
