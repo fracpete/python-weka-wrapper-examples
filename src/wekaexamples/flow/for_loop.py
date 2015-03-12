@@ -15,7 +15,6 @@
 # Copyright (C) 2015 Fracpete (pythonwekawrapper at gmail dot com)
 
 import traceback
-import tempfile
 import weka.core.jvm as jvm
 from weka.flow.control import Flow, Trigger
 from weka.flow.source import ForLoop
