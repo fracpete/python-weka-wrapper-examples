@@ -110,8 +110,8 @@ def load_custom_loader():
 
     loaddataset = LoadDataset()
     loaddataset.options["incremental"] = False
-    loaddataset.options["use_custom_lodaer"] = True
-    loaddataset.options["custom_lodaer"] = Loader(classname="weka.core.converters.CSVLoader")
+    loaddataset.options["use_custom_loader"] = True
+    loaddataset.options["custom_loader"] = Loader(classname="weka.core.converters.CSVLoader")
     flow.actors.append(loaddataset)
 
     console = Console()
