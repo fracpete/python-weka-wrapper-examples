@@ -22,7 +22,7 @@ import wekaexamples.helper as helper
 from weka.clusterers import Clusterer
 from weka.flow.control import Flow, ContainerValuePicker
 from weka.flow.source import FileSupplier
-from weka.flow.transformer import LoadDataset, TrainClusterer
+from weka.flow.transformer import LoadDataset, Train
 from weka.flow.sink import Console, ModelWriter
 
 
@@ -44,8 +44,8 @@ def main():
     loaddataset = LoadDataset()
     flow.actors.append(loaddataset)
 
-    train = TrainClusterer()
-    train.options["clusterer"] = Clusterer(classname="weka.clusterers.SimpleKMeans")
+    train = Train()
+    train.options["setup"] = Clusterer(classname="weka.clusterers.SimpleKMeans")
     flow.actors.append(train)
 
     pick = ContainerValuePicker()

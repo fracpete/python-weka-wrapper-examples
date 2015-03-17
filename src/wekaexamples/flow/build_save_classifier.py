@@ -22,7 +22,7 @@ import wekaexamples.helper as helper
 from weka.classifiers import Classifier
 from weka.flow.control import Flow, ContainerValuePicker
 from weka.flow.source import FileSupplier
-from weka.flow.transformer import LoadDataset, ClassSelector, TrainClassifier
+from weka.flow.transformer import LoadDataset, ClassSelector, Train
 from weka.flow.sink import Console, ModelWriter
 
 
@@ -48,8 +48,8 @@ def main():
     select.options["index"] = "last"
     flow.actors.append(select)
 
-    train = TrainClassifier()
-    train.options["classifier"] = Classifier(classname="weka.classifiers.trees.J48")
+    train = Train()
+    train.options["setup"] = Classifier(classname="weka.classifiers.trees.J48")
     flow.actors.append(train)
 
     pick = ContainerValuePicker()
