@@ -45,7 +45,7 @@ def main():
 
     # print flow
     flow.setup()
-    print(flow.tree)
+    print("\n" + flow.tree + "\n")
 
     # save the flow
     fname = tempfile.gettempdir() + os.sep + "simpleflow.json"
