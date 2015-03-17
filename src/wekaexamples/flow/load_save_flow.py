@@ -18,7 +18,7 @@ import os
 import traceback
 import tempfile
 import weka.core.jvm as jvm
-from weka.flow.control import Flow
+from weka.flow.control import Flow, Tee
 from weka.flow.source import ListFiles
 from weka.flow.sink import Console
 
@@ -39,9 +39,12 @@ def main():
     listfiles.options["regexp"] = ".*r.*"
     flow.actors.append(listfiles)
 
+    tee = Tee()
+    flow.actors.append(tee)
+
     console = Console()
     console.options["prefix"] = "Match: "
-    flow.actors.append(console)
+    tee.actors.append(console)
 
     # print flow
     flow.setup()
@@ -52,10 +55,11 @@ def main():
     Flow.save(flow, fname)
 
     # load flow
-    flow = Flow.load(fname)
+    fl2 = Flow.load(fname)
 
     # output flow
-    print(flow)
+    fl2.setup()
+    print("\n" + fl2.tree + "\n")
 
 if __name__ == "__main__":
     try:
