@@ -22,7 +22,7 @@ from weka.classifiers import Classifier
 from weka.flow.control import Flow, Branch, Sequence
 from weka.flow.source import FileSupplier
 from weka.flow.transformer import LoadDataset, ClassSelector, CrossValidate, EvaluationSummary
-from weka.flow.sink import Console, ClassifierErrors
+from weka.flow.sink import Console, ClassifierErrors, ROC, PRC
 
 
 def main():
@@ -55,6 +55,7 @@ def main():
     flow.actors.append(branch)
 
     seqsum = Sequence()
+    seqsum.name = "summary"
     branch.actors.append(seqsum)
 
     summary = EvaluationSummary()
@@ -67,10 +68,30 @@ def main():
     seqsum.actors.append(console)
 
     seqerr = Sequence()
+    seqerr.name = "errors"
     branch.actors.append(seqerr)
 
     errors = ClassifierErrors()
+    errors.options["wait"] = False
     seqerr.actors.append(errors)
+
+    seqroc = Sequence()
+    seqroc.name = "roc"
+    branch.actors.append(seqroc)
+
+    roc = ROC()
+    roc.options["wait"] = False
+    roc.options["class_index"] = [0, 1, 2]
+    seqroc.actors.append(roc)
+
+    seqprc = Sequence()
+    seqprc.name = "prc"
+    branch.actors.append(seqprc)
+
+    prc = PRC()
+    prc.options["wait"] = True
+    prc.options["class_index"] = [0, 1, 2]
+    seqprc.actors.append(prc)
 
     # run the flow
     msg = flow.setup()
