@@ -16,7 +16,7 @@
 
 import traceback
 import weka.core.jvm as jvm
-from weka.flow.control import Flow, Trigger
+from weka.flow.control import Flow
 from weka.flow.source import ForLoop
 from weka.flow.sink import Console
 from weka.flow.transformer import MathExpression
@@ -35,7 +35,7 @@ def main():
     flow.actors.append(outer)
 
     expr = MathExpression()
-    expr.options["expression"] = "math.sqrt(X)"
+    expr.options["expression"] = "math.sqrt({X})"
     flow.actors.append(expr)
 
     console = Console()
