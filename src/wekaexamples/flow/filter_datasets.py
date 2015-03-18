@@ -41,14 +41,14 @@ def main():
     flow = Flow(name="filter datasets")
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [iris, anneal]
+    filesupplier.config["files"] = [iris, anneal]
     flow.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
     flow.actors.append(loaddataset)
 
     flter = Filter()
-    flter.options["setup"] = filters.Filter(
+    flter.config["setup"] = filters.Filter(
         classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "1"])
     flow.actors.append(flter)
 

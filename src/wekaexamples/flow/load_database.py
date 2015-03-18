@@ -36,10 +36,10 @@ def main():
     flow = Flow(name="load from database")
 
     loaddatabase = LoadDatabase()
-    loaddatabase.options["db_url"] = "jdbc:mysql://HOSTNAME:3306/DBNAME"
-    loaddatabase.options["user"] = "DBUSER"
-    loaddatabase.options["password"] = "DBPW"
-    loaddatabase.options["query"] = "select * from TABLE"
+    loaddatabase.config["db_url"] = "jdbc:mysql://HOSTNAME:3306/DBNAME"
+    loaddatabase.config["user"] = "DBUSER"
+    loaddatabase.config["password"] = "DBPW"
+    loaddatabase.config["query"] = "select * from TABLE"
     flow.actors.append(loaddatabase)
 
     console = Console()

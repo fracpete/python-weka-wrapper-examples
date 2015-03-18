@@ -46,30 +46,30 @@ def main():
     flow.actors.append(build_save)
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [iris]
+    filesupplier.config["files"] = [iris]
     build_save.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
     build_save.actors.append(loaddataset)
 
     select = ClassSelector()
-    select.options["index"] = "last"
+    select.config["index"] = "last"
     build_save.actors.append(select)
 
     train = Train()
-    train.options["setup"] = Classifier(classname="weka.classifiers.trees.J48")
+    train.config["setup"] = Classifier(classname="weka.classifiers.trees.J48")
     build_save.actors.append(train)
 
     pick = ContainerValuePicker()
-    pick.options["value"] = "Model"
+    pick.config["value"] = "Model"
     build_save.actors.append(pick)
 
     console = Console()
-    console.options["prefix"] = "built: "
+    console.config["prefix"] = "built: "
     pick.actors.append(console)
 
     writer = ModelWriter()
-    writer.options["output"] = clsfile
+    writer.config["output"] = clsfile
     build_save.actors.append(writer)
 
     load = Trigger()
@@ -77,18 +77,18 @@ def main():
     flow.actors.append(load)
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [clsfile]
+    filesupplier.config["files"] = [clsfile]
     load.actors.append(filesupplier)
 
     reader = ModelReader()
     load.actors.append(reader)
 
     pick = ContainerValuePicker()
-    pick.options["value"] = "Model"
+    pick.config["value"] = "Model"
     load.actors.append(pick)
 
     console = Console()
-    console.options["prefix"] = "loaded: "
+    console.config["prefix"] = "loaded: "
     pick.actors.append(console)
 
     # run the flow

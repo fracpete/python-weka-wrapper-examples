@@ -34,8 +34,8 @@ def main():
     flow.actors.append(start)
 
     init = InitStorageValue()
-    init.options["storage_name"] = "max"
-    init.options["value"] = "int(1)"
+    init.config["storage_name"] = "max"
+    init.config["value"] = "int(1)"
     flow.actors.append(init)
 
     trigger = Trigger()
@@ -43,7 +43,7 @@ def main():
 
     outer = ForLoop()
     outer.name = "outer"
-    outer.options["max"] = 3
+    outer.config["max"] = 3
     trigger.actors.append(outer)
 
     trigger2 = Trigger()
@@ -51,15 +51,15 @@ def main():
 
     inner = ForLoop()
     inner.name = "inner"
-    inner.options["max"] = "@{max}"
+    inner.config["max"] = "@{max}"
     trigger2.actors.append(inner)
 
     console = Console()
     trigger2.actors.append(console)
 
     update = UpdateStorageValue()
-    update.options["storage_name"] = "max"
-    update.options["expression"] = "{X} + 2"
+    update.config["storage_name"] = "max"
+    update.config["expression"] = "{X} + 2"
     trigger.actors.append(update)
 
     # run the flow

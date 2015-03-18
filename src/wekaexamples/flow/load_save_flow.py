@@ -34,22 +34,22 @@ def main():
     flow = Flow(name="list files")
 
     listfiles = ListFiles()
-    listfiles.options["dir"] = str(tempfile.gettempdir())
-    listfiles.options["list_files"] = True
-    listfiles.options["list_dirs"] = False
-    listfiles.options["recursive"] = False
-    listfiles.options["regexp"] = ".*r.*"
+    listfiles.config["dir"] = str(tempfile.gettempdir())
+    listfiles.config["list_files"] = True
+    listfiles.config["list_dirs"] = False
+    listfiles.config["recursive"] = False
+    listfiles.config["regexp"] = ".*r.*"
     flow.actors.append(listfiles)
 
     tee = Tee()
     flow.actors.append(tee)
 
     convert = Convert()
-    convert.options["setup"] = conversion.PassThrough()
+    convert.config["setup"] = conversion.PassThrough()
     tee.actors.append(convert)
 
     console = Console()
-    console.options["prefix"] = "Match: "
+    console.config["prefix"] = "Match: "
     tee.actors.append(console)
 
     # print flow

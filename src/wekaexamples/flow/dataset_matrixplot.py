@@ -39,14 +39,14 @@ def main():
     flow = Flow(name="matrix plot")
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [iris]
+    filesupplier.config["files"] = [iris]
     flow.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
     flow.actors.append(loaddataset)
 
     plot = MatrixPlot()
-    plot.options["percent"] = 50.0
+    plot.config["percent"] = 50.0
     flow.actors.append(plot)
 
     # run the flow

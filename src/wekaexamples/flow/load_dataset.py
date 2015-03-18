@@ -37,11 +37,11 @@ def load_batch():
     flow = Flow(name="load dataset")
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [iris]
+    filesupplier.config["files"] = [iris]
     flow.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
-    loaddataset.options["incremental"] = False
+    loaddataset.config["incremental"] = False
     flow.actors.append(loaddataset)
 
     console = Console()
@@ -72,11 +72,11 @@ def load_incremental():
     flow = Flow(name="load dataset")
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [iris]
+    filesupplier.config["files"] = [iris]
     flow.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
-    loaddataset.options["incremental"] = True
+    loaddataset.config["incremental"] = True
     flow.actors.append(loaddataset)
 
     console = Console()
@@ -106,13 +106,13 @@ def load_custom_loader():
     flow = Flow(name="load dataset")
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [iris]
+    filesupplier.config["files"] = [iris]
     flow.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
-    loaddataset.options["incremental"] = False
-    loaddataset.options["use_custom_loader"] = True
-    loaddataset.options["custom_loader"] = Loader(classname="weka.core.converters.CSVLoader")
+    loaddataset.config["incremental"] = False
+    loaddataset.config["use_custom_loader"] = True
+    loaddataset.config["custom_loader"] = Loader(classname="weka.core.converters.CSVLoader")
     flow.actors.append(loaddataset)
 
     console = Console()

@@ -38,25 +38,25 @@ def main():
     flow = Flow(name="build and save clusterer")
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [iris]
+    filesupplier.config["files"] = [iris]
     flow.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
     flow.actors.append(loaddataset)
 
     train = Train()
-    train.options["setup"] = Clusterer(classname="weka.clusterers.SimpleKMeans")
+    train.config["setup"] = Clusterer(classname="weka.clusterers.SimpleKMeans")
     flow.actors.append(train)
 
     pick = ContainerValuePicker()
-    pick.options["value"] = "Model"
+    pick.config["value"] = "Model"
     flow.actors.append(pick)
 
     console = Console()
     pick.actors.append(console)
 
     writer = ModelWriter()
-    writer.options["output"] = str(tempfile.gettempdir()) + os.sep + "simplekmeans.model"
+    writer.config["output"] = str(tempfile.gettempdir()) + os.sep + "simplekmeans.model"
     flow.actors.append(writer)
 
     # run the flow

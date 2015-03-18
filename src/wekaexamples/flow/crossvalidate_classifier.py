@@ -37,18 +37,18 @@ def main():
     flow = Flow(name="cross-validate classifier")
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [iris]
+    filesupplier.config["files"] = [iris]
     flow.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
     flow.actors.append(loaddataset)
 
     select = ClassSelector()
-    select.options["index"] = "last"
+    select.config["index"] = "last"
     flow.actors.append(select)
 
     cv = CrossValidate()
-    cv.options["setup"] = Classifier(classname="weka.classifiers.trees.J48")
+    cv.config["setup"] = Classifier(classname="weka.classifiers.trees.J48")
     flow.actors.append(cv)
 
     branch = Branch()
@@ -59,9 +59,9 @@ def main():
     branch.actors.append(seqsum)
 
     summary = EvaluationSummary()
-    summary.options["title"] = "=== J48/iris ==="
-    summary.options["complexity"] = False
-    summary.options["matrix"] = True
+    summary.config["title"] = "=== J48/iris ==="
+    summary.config["complexity"] = False
+    summary.config["matrix"] = True
     seqsum.actors.append(summary)
 
     console = Console()
@@ -72,7 +72,7 @@ def main():
     branch.actors.append(seqerr)
 
     errors = ClassifierErrors()
-    errors.options["wait"] = False
+    errors.config["wait"] = False
     seqerr.actors.append(errors)
 
     seqroc = Sequence()
@@ -80,8 +80,8 @@ def main():
     branch.actors.append(seqroc)
 
     roc = ROC()
-    roc.options["wait"] = False
-    roc.options["class_index"] = [0, 1, 2]
+    roc.config["wait"] = False
+    roc.config["class_index"] = [0, 1, 2]
     seqroc.actors.append(roc)
 
     seqprc = Sequence()
@@ -89,8 +89,8 @@ def main():
     branch.actors.append(seqprc)
 
     prc = PRC()
-    prc.options["wait"] = True
-    prc.options["class_index"] = [0, 1, 2]
+    prc.config["wait"] = True
+    prc.config["class_index"] = [0, 1, 2]
     seqprc.actors.append(prc)
 
     # run the flow

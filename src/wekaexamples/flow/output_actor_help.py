@@ -30,7 +30,7 @@ def main():
     helper.print_title("Output actor help")
 
     cv = CrossValidate()
-    cv.options["setup"] = Classifier(classname="weka.classifiers.trees.J48")
+    cv.config["setup"] = Classifier(classname="weka.classifiers.trees.J48")
     cv.print_help()
 
 if __name__ == "__main__":

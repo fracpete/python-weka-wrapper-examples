@@ -44,30 +44,30 @@ def main():
     flow.actors.append(build_save)
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [iris]
+    filesupplier.config["files"] = [iris]
     build_save.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
     build_save.actors.append(loaddataset)
 
     select = ClassSelector()
-    select.options["index"] = "last"
+    select.config["index"] = "last"
     build_save.actors.append(select)
 
     ssv = SetStorageValue()
-    ssv.options["storage_name"] = "data"
+    ssv.config["storage_name"] = "data"
     build_save.actors.append(ssv)
 
     train = Train()
-    train.options["setup"] = Classifier(classname="weka.classifiers.trees.J48")
+    train.config["setup"] = Classifier(classname="weka.classifiers.trees.J48")
     build_save.actors.append(train)
 
     pick = ContainerValuePicker()
-    pick.options["value"] = "Model"
+    pick.config["value"] = "Model"
     build_save.actors.append(pick)
 
     ssv = SetStorageValue()
-    ssv.options["storage_name"] = "model"
+    ssv.config["storage_name"] = "model"
     pick.actors.append(ssv)
 
     evaluate = Trigger()
@@ -75,15 +75,15 @@ def main():
     flow.actors.append(evaluate)
 
     gsv = GetStorageValue()
-    gsv.options["storage_name"] = "data"
+    gsv.config["storage_name"] = "data"
     evaluate.actors.append(gsv)
 
     evl = Evaluate()
-    evl.options["storage_name"] = "model"
+    evl.config["storage_name"] = "model"
     evaluate.actors.append(evl)
 
     summary = EvaluationSummary()
-    summary.options["matrix"] = True
+    summary.config["matrix"] = True
     evaluate.actors.append(summary)
 
     console = Console()

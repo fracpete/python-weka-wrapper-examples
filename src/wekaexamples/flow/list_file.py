@@ -32,16 +32,16 @@ def main():
     # flow.print_help()
 
     listfiles = ListFiles()
-    listfiles.options["dir"] = str(tempfile.gettempdir())
-    listfiles.options["list_files"] = True
-    listfiles.options["list_dirs"] = False
-    listfiles.options["recursive"] = False
-    listfiles.options["regexp"] = ".*r.*"
+    listfiles.config["dir"] = str(tempfile.gettempdir())
+    listfiles.config["list_files"] = True
+    listfiles.config["list_dirs"] = False
+    listfiles.config["recursive"] = False
+    listfiles.config["regexp"] = ".*r.*"
     # listfiles.print_help()
     flow.actors.append(listfiles)
 
     console = Console()
-    console.options["prefix"] = "Match: "
+    console.config["prefix"] = "Match: "
     # console.print_help()
     flow.actors.append(console)
 

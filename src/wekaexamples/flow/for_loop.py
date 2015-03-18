@@ -32,11 +32,11 @@ def main():
 
     outer = ForLoop()
     outer.name = "outer"
-    outer.options["max"] = 3
+    outer.config["max"] = 3
     flow.actors.append(outer)
 
     ssv = SetStorageValue()
-    ssv.options["storage_name"] = "max"
+    ssv.config["storage_name"] = "max"
     flow.actors.append(ssv)
 
     trigger = Trigger()
@@ -44,7 +44,7 @@ def main():
 
     inner = ForLoop()
     inner.name = "inner"
-    inner.options["max"] = "@{max}"
+    inner.config["max"] = "@{max}"
     trigger.actors.append(inner)
 
     console = Console()

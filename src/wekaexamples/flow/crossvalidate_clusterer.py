@@ -38,7 +38,7 @@ def main():
     flow = Flow(name="cross-validate clusterer")
 
     filesupplier = FileSupplier()
-    filesupplier.options["files"] = [iris]
+    filesupplier.config["files"] = [iris]
     flow.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
@@ -46,16 +46,16 @@ def main():
 
     flter = Filter()
     flter.name = "Remove class"
-    flter.options["filter"] = filters.Filter(
+    flter.config["filter"] = filters.Filter(
         classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "last"])
     flow.actors.append(flter)
 
     cv = CrossValidate()
-    cv.options["setup"] = Clusterer(classname="weka.clusterers.EM")
+    cv.config["setup"] = Clusterer(classname="weka.clusterers.EM")
     flow.actors.append(cv)
 
     console = Console()
-    console.options["prefix"] = "Loglikelihood: "
+    console.config["prefix"] = "Loglikelihood: "
     flow.actors.append(console)
 
     # run the flow

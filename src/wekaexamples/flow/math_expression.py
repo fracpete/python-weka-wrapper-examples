@@ -31,11 +31,11 @@ def main():
     flow = Flow(name="math expression")
 
     outer = ForLoop()
-    outer.options["max"] = 100
+    outer.config["max"] = 100
     flow.actors.append(outer)
 
     expr = MathExpression()
-    expr.options["expression"] = "math.sqrt({X})"
+    expr.config["expression"] = "math.sqrt({X})"
     flow.actors.append(expr)
 
     console = Console()
