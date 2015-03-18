@@ -21,6 +21,8 @@ import weka.core.jvm as jvm
 from weka.flow.control import Flow, Tee
 from weka.flow.source import ListFiles
 from weka.flow.sink import Console
+from weka.flow.transformer import Convert
+import weka.flow.conversion as conversion
 
 
 def main():
@@ -41,6 +43,10 @@ def main():
 
     tee = Tee()
     flow.actors.append(tee)
+
+    convert = Convert()
+    convert.options["setup"] = conversion.PassThrough()
+    tee.actors.append(convert)
 
     console = Console()
     console.options["prefix"] = "Match: "
