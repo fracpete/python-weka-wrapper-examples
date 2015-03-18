@@ -11,7 +11,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# build_save_classifier.py
+# build_save_load_classifier.py
 # Copyright (C) 2015 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
@@ -20,9 +20,9 @@ import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.classifiers import Classifier
-from weka.flow.control import Flow, ContainerValuePicker
-from weka.flow.source import FileSupplier
-from weka.flow.transformer import LoadDataset, ClassSelector, Train
+from weka.flow.control import Flow, ContainerValuePicker, Trigger
+from weka.flow.source import FileSupplier, Start
+from weka.flow.transformer import LoadDataset, ClassSelector, Train, ModelReader
 from weka.flow.sink import Console, ModelWriter
 
 
@@ -32,36 +32,64 @@ def main():
     """
 
     # setup the flow
-    helper.print_title("build and save classifier")
+    helper.print_title("build, save and load classifier")
     iris = helper.get_data_dir() + os.sep + "iris.arff"
+    clsfile = str(tempfile.gettempdir()) + os.sep + "j48.model"
 
-    flow = Flow(name="build and save classifier")
+    flow = Flow(name="build, save and load classifier")
+
+    start = Start()
+    flow.actors.append(start)
+
+    build_save = Trigger()
+    build_save.name = "build and save classifier"
+    flow.actors.append(build_save)
 
     filesupplier = FileSupplier()
     filesupplier.options["files"] = [iris]
-    flow.actors.append(filesupplier)
+    build_save.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
-    flow.actors.append(loaddataset)
+    build_save.actors.append(loaddataset)
 
     select = ClassSelector()
     select.options["index"] = "last"
-    flow.actors.append(select)
+    build_save.actors.append(select)
 
     train = Train()
     train.options["setup"] = Classifier(classname="weka.classifiers.trees.J48")
-    flow.actors.append(train)
+    build_save.actors.append(train)
 
     pick = ContainerValuePicker()
     pick.options["value"] = "Model"
-    flow.actors.append(pick)
+    build_save.actors.append(pick)
 
     console = Console()
+    console.options["prefix"] = "built: "
     pick.actors.append(console)
 
     writer = ModelWriter()
-    writer.options["output"] = str(tempfile.gettempdir()) + os.sep + "j48.model"
-    flow.actors.append(writer)
+    writer.options["output"] = clsfile
+    build_save.actors.append(writer)
+
+    load = Trigger()
+    load.name = "load classifier"
+    flow.actors.append(load)
+
+    filesupplier = FileSupplier()
+    filesupplier.options["files"] = [clsfile]
+    load.actors.append(filesupplier)
+
+    reader = ModelReader()
+    load.actors.append(reader)
+
+    pick = ContainerValuePicker()
+    pick.options["value"] = "Model"
+    load.actors.append(pick)
+
+    console = Console()
+    console.options["prefix"] = "loaded: "
+    pick.actors.append(console)
 
     # run the flow
     msg = flow.setup()
