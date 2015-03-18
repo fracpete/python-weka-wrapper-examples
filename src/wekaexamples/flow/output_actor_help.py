@@ -14,15 +14,11 @@
 # output_actor_help.py
 # Copyright (C) 2015 Fracpete (pythonwekawrapper at gmail dot com)
 
-import os
 import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.classifiers import Classifier
-from weka.flow.control import Flow
-from weka.flow.source import FileSupplier
-from weka.flow.transformer import LoadDataset, ClassSelector, CrossValidate
-from weka.flow.sink import Console
+from weka.flow.transformer import CrossValidate
 
 
 def main():
