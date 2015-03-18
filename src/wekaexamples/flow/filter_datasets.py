@@ -48,7 +48,7 @@ def main():
     flow.actors.append(loaddataset)
 
     flter = Filter()
-    flter.options["filter"] = filters.Filter(
+    flter.options["setup"] = filters.Filter(
         classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "1"])
     flow.actors.append(flter)
 
