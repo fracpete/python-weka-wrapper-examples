@@ -12,19 +12,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # classifiers.py
-# Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2015 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import traceback
 import weka.core.jvm as jvm
-import weka.core.utils as utils
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
 from weka.classifiers import Classifier, SingleClassifierEnhancer, MultipleClassifiersCombiner, FilteredClassifier, \
     PredictionOutput, Kernel, KernelClassifier
 from weka.classifiers import Evaluation
 from weka.filters import Filter
-from weka.core.classes import Random
+from weka.core.classes import Random, from_commandline
 import weka.plot.classifiers as plot_cls
 import weka.plot.graph as plot_graph
 import weka.core.types as types
@@ -45,7 +44,7 @@ def main():
     # classifier from commandline
     helper.print_title("Creating SMO from command-line string")
     cmdline = 'weka.classifiers.functions.SMO -K "weka.classifiers.functions.supportVector.NormalizedPolyKernel -E 3.0"'
-    classifier = utils.from_commandline(cmdline, classname="weka.classifiers.Classifier")
+    classifier = from_commandline(cmdline, classname="weka.classifiers.Classifier")
     classifier.build_classifier(iris_data)
     print("input: " + cmdline)
     print("output: " + classifier.to_commandline())

@@ -18,11 +18,13 @@ import os
 import traceback
 import tempfile
 import weka.core.jvm as jvm
+import wekaexamples.helper as helper
 from weka.flow.control import Flow, Tee
 from weka.flow.source import ListFiles
 from weka.flow.sink import Console
-from weka.flow.transformer import Convert
+from weka.flow.transformer import Convert, LoadDataset, CrossValidate, EvaluationSummary
 import weka.flow.conversion as conversion
+from weka.classifiers import Classifier
 
 
 def main():
@@ -34,11 +36,11 @@ def main():
     flow = Flow(name="list files")
 
     listfiles = ListFiles()
-    listfiles.config["dir"] = str(tempfile.gettempdir())
+    listfiles.config["dir"] = str(helper.get_data_dir())
     listfiles.config["list_files"] = True
     listfiles.config["list_dirs"] = False
     listfiles.config["recursive"] = False
-    listfiles.config["regexp"] = ".*r.*"
+    listfiles.config["regexp"] = ".*.arff"
     flow.actors.append(listfiles)
 
     tee = Tee()
@@ -51,6 +53,18 @@ def main():
     console = Console()
     console.config["prefix"] = "Match: "
     tee.actors.append(console)
+
+    load = LoadDataset()
+    load.config["use_custom_loader"] = True
+    flow.actors.append(load)
+
+    cross = CrossValidate()
+    cross.config["setup"] = Classifier(classname="weka.classifiers.trees.J48", options=["-C", "0.3"])
+    flow.actors.append(cross)
+
+    summary = EvaluationSummary()
+    summary.config["matrix"] = True
+    flow.actors.append(summary)
 
     # print flow
     flow.setup()
