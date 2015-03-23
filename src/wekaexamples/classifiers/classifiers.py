@@ -225,10 +225,8 @@ def main():
     helper.print_title("Header - bolts")
     print(str(evaluation.header))
     helper.print_title("Predictions on bolts")
-    i = 0
-    for pred in evaluation.predictions:
-        i += 1
-        print(str(i) + ": " + str(pred) + " -> error=" + str(pred.error))
+    for index, pred in enumerate(evaluation.predictions):
+        print(str(index+1) + ": " + str(pred) + " -> error=" + str(pred.error))
     plot_cls.plot_classifier_errors(evaluation.predictions, wait=False)
 
     # learning curve
