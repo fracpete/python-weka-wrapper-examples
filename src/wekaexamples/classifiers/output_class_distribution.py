@@ -45,13 +45,12 @@ def main(args):
 
     # output predictions
     print("# - actual - predicted - error - distribution")
-    for i in xrange(test.num_instances):
-        inst = test.get_instance(i)
+    for index, inst in enumerate(test):
         pred = cls.classify_instance(inst)
         dist = cls.distribution_for_instance(inst)
         print(
             "%d - %s - %s - %s  - %s" %
-            (i+1,
+            (index+1,
              inst.get_string_value(inst.class_index),
              inst.class_attribute.value(int(pred)),
              "yes" if pred != inst.get_value(inst.class_index) else "no",
