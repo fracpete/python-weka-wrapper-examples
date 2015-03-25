@@ -128,10 +128,24 @@ def main():
     dataset.delete_with_missing(2)
     print("Dataset (after delete of missing):\n" + str(dataset))
     values = [(1, date_att.parse_date("2014-07-11"))]
-    inst = Instance.create_instance(values, classname="weka.core.SparseInstance", max_values=3)
+    inst = Instance.create_sparse_instance(values, 3, classname="weka.core.SparseInstance")
     print("sparse Instance:\n" + str(inst))
     dataset.add_instance(inst)
     print("dataset with mixed dense/sparse instance objects:\n" + str(dataset))
+
+    # create more sparse instances
+    diabetes_file = helper.get_data_dir() + os.sep + "diabetes.arff"
+    helper.print_info("Loading dataset: " + diabetes_file)
+    loader = Loader("weka.core.converters.ArffLoader")
+    diabetes_data = loader.load_file(diabetes_file)
+    diabetes_data.class_is_last()
+    helper.print_title("Create sparse instances using template dataset")
+    sparse_data = Instances.template_instances(diabetes_data)
+    for i in xrange(diabetes_data.num_attributes - 1):
+        inst = Instance.create_sparse_instance(
+            [(i, float(i+1) / 10.0)], sparse_data.num_attributes, classname="weka.core.SparseInstance")
+        sparse_data.add_instance(inst)
+    print("sparse dataset:\n" + str(sparse_data))
 
     # simple scatterplot of iris dataset: petalwidth x petallength
     iris_data = loader.load_file(iris_file)
