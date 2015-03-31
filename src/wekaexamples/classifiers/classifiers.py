@@ -41,6 +41,11 @@ def main():
     iris_data = loader.load_file(iris_file)
     iris_data.class_is_last()
 
+    # classifier help
+    helper.print_title("Creating help string")
+    classifier = Classifier(classname="weka.classifiers.trees.J48")
+    print(classifier.to_help())
+
     # classifier from commandline
     helper.print_title("Creating SMO from command-line string")
     cmdline = 'weka.classifiers.functions.SMO -K "weka.classifiers.functions.supportVector.NormalizedPolyKernel -E 3.0"'
