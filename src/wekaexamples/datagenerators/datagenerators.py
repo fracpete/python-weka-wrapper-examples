@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # datagenerators.py
-# Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2015 Fracpete (pythonwekawrapper at gmail dot com)
 
 import traceback
 import weka.core.jvm as jvm
@@ -25,9 +25,22 @@ def main():
     Just runs some example code.
     """
 
-    helper.print_title("Generate data")
+    helper.print_title("Generate data (Agrawal)")
     generator = DataGenerator(
-        classname="weka.datagenerators.classifiers.classification.Agrawal", options=["-n", "10", "-r", "agrawal"])
+        classname="weka.datagenerators.classifiers.classification.Agrawal",
+        options=["-n", "10", "-r", "agrawal"])
+    generator.dataset_format = generator.define_data_format()
+    print(generator.dataset_format)
+    if generator.single_mode_flag:
+        for i in xrange(generator.num_examples_act):
+            print(generator.generate_example())
+    else:
+        print(generator.generate_examples())
+
+    helper.print_title("Generate data (BayesNet)")
+    generator = DataGenerator(
+        classname="weka.datagenerators.classifiers.classification.BayesNet",
+        options=["-S", "2","-n", "10", "-C", "10"])
     generator.dataset_format = generator.define_data_format()
     print(generator.dataset_format)
     if generator.single_mode_flag:
