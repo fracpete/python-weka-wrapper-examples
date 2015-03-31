@@ -40,7 +40,7 @@ def main():
     helper.print_title("Generate data (BayesNet)")
     generator = DataGenerator(
         classname="weka.datagenerators.classifiers.classification.BayesNet",
-        options=["-S", "2","-n", "10", "-C", "10"])
+        options=["-S", "2", "-n", "10", "-C", "10"])
     generator.dataset_format = generator.define_data_format()
     print(generator.dataset_format)
     if generator.single_mode_flag:
