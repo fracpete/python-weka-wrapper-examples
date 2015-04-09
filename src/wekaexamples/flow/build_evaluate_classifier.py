@@ -11,7 +11,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# build_evaluate_clusterer.py
+# build_evaluate_classifier.py
 # Copyright (C) 2015 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
@@ -31,16 +31,16 @@ def main():
     """
 
     # setup the flow
-    helper.print_title("build and evaluate clusterer")
+    helper.print_title("build and evaluate classifier")
     iris = helper.get_data_dir() + os.sep + "iris.arff"
 
-    flow = Flow(name="build and evaluate clusterer")
+    flow = Flow(name="build and evaluate classifier")
 
     start = Start()
     flow.actors.append(start)
 
     build_save = Trigger()
-    build_save.name = "build and store clusterer"
+    build_save.name = "build and store classifier"
     flow.actors.append(build_save)
 
     filesupplier = FileSupplier()
@@ -71,7 +71,7 @@ def main():
     pick.actors.append(ssv)
 
     evaluate = Trigger()
-    evaluate.name = "evaluate clusterer"
+    evaluate.name = "evaluate classifier"
     flow.actors.append(evaluate)
 
     gsv = GetStorageValue()
