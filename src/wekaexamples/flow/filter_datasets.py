@@ -77,13 +77,14 @@ def incremental():
     """
 
     # setup the flow
-    helper.print_title("Filter dataset (incrementally)")
+    helper.print_title("Filter datasets (incrementally)")
     iris = helper.get_data_dir() + os.sep + "iris.arff"
+    anneal = helper.get_data_dir() + os.sep + "anneal.arff"
 
-    flow = Flow(name="filter dataset (incrementally)")
+    flow = Flow(name="filter datasets (incrementally)")
 
     filesupplier = FileSupplier()
-    filesupplier.config["files"] = [iris]
+    filesupplier.config["files"] = [iris, anneal]
     flow.actors.append(filesupplier)
 
     loaddataset = LoadDataset()
