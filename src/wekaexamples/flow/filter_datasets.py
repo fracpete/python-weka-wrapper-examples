@@ -25,20 +25,20 @@ from weka.flow.transformer import LoadDataset, Filter
 from weka.flow.sink import Console
 
 
-def main():
+def batch_mode():
     """
     Just runs some example code.
     """
     """
-    Loads a dataset in batch mode.
+    Loads/filters a dataset in batch mode.
     """
 
     # setup the flow
-    helper.print_title("Filter datasets")
+    helper.print_title("Filter datasets (batch mode)")
     iris = helper.get_data_dir() + os.sep + "iris.arff"
     anneal = helper.get_data_dir() + os.sep + "anneal.arff"
 
-    flow = Flow(name="filter datasets")
+    flow = Flow(name="filter datasets (batch mode)")
 
     filesupplier = FileSupplier()
     filesupplier.config["files"] = [iris, anneal]
@@ -66,6 +66,54 @@ def main():
         print("Error setting up flow:\n" + msg)
     flow.wrapup()
     flow.cleanup()
+
+
+def incremental():
+    """
+    Just runs some example code.
+    """
+    """
+    Loads/filters a dataset incrementally.
+    """
+
+    # setup the flow
+    helper.print_title("Filter dataset (incrementally)")
+    iris = helper.get_data_dir() + os.sep + "iris.arff"
+
+    flow = Flow(name="filter dataset (incrementally)")
+
+    filesupplier = FileSupplier()
+    filesupplier.config["files"] = [iris]
+    flow.actors.append(filesupplier)
+
+    loaddataset = LoadDataset()
+    loaddataset.config["incremental"] = True
+    flow.actors.append(loaddataset)
+
+    flter = Filter()
+    flter.config["setup"] = filters.Filter(
+        classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "1"])
+    flow.actors.append(flter)
+
+    console = Console()
+    flow.actors.append(console)
+
+    # run the flow
+    msg = flow.setup()
+    if msg is None:
+        print("\n" + flow.tree + "\n")
+        msg = flow.execute()
+        if msg is not None:
+            print("Error executing flow:\n" + msg)
+    else:
+        print("Error setting up flow:\n" + msg)
+    flow.wrapup()
+    flow.cleanup()
+
+
+def main():
+    batch_mode()
+    incremental()
 
 if __name__ == "__main__":
     try:
