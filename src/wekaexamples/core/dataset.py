@@ -156,6 +156,11 @@ def main():
         percent=50,
         wait=False)
 
+    # line plot of iris dataset (without class attribute)
+    iris_data = loader.load_file(iris_file)
+    iris_data.class_is_last()
+    pld.line_plot(iris_data, atts=xrange(iris_data.num_attributes - 1), percent=50, title="Line plot iris", wait=False)
+
     # matrix plot of iris dataset
     iris_data = loader.load_file(iris_file)
     iris_data.class_is_last()
