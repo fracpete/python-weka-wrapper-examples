@@ -50,6 +50,7 @@ def batch_mode():
     flter = Filter()
     flter.config["setup"] = filters.Filter(
         classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "1"])
+    flter.config["keep_relationname"] = True
     flow.actors.append(flter)
 
     console = Console()
@@ -94,6 +95,7 @@ def incremental():
     flter = Filter()
     flter.config["setup"] = filters.Filter(
         classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "1"])
+    flter.config["keep_relationname"] = True
     flow.actors.append(flter)
 
     console = Console()
