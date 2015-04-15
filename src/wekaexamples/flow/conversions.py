@@ -18,7 +18,6 @@ import os
 import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
-import weka.filters as filters
 from weka.flow.conversion import AnyToCommandline, CommandlineToAny
 from weka.flow.control import Flow
 from weka.flow.source import StringConstants
