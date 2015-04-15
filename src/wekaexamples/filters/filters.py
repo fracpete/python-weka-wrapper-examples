@@ -12,14 +12,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # filters.py
-# Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2015 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import traceback
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
-from weka.filters import Filter, MultiFilter
+from weka.core.stemmers import Stemmer
+from weka.core.stopwords import Stopwords
+from weka.core.tokenizers import Tokenizer
+from weka.filters import Filter, MultiFilter, StringToWordVector
 
 
 def main():
@@ -55,6 +58,29 @@ def main():
     print(filtered)
     helper.print_title("Output (MultiFilter)")
     print(filtered_multi)
+
+    # load text dataset
+    text = helper.get_data_dir() + os.sep + "reutersTop10Randomized_1perc_shortened.arff"
+    helper.print_info("Loading dataset: " + text)
+    loader = Loader("weka.core.converters.ArffLoader")
+    data = loader.load_file(text)
+    data.class_is_last()
+
+    # apply StringToWordVector
+    stemmer = Stemmer(classname="weka.core.stemmers.IteratedLovinsStemmer")
+    stopwords = Stopwords(classname="weka.core.stopwords.Rainbow")
+    tokenizer = Tokenizer(classname="weka.core.tokenizers.WordTokenizer")
+    s2wv = StringToWordVector(options=["-W", "10", "-L", "-C"])
+    s2wv.stemmer = stemmer
+    s2wv.stopwords = stopwords
+    s2wv.tokenizer = tokenizer
+    s2wv.inputformat(data)
+    filtered = s2wv.filter(data)
+
+    helper.print_title("Input (StringToWordVector)")
+    print(data)
+    helper.print_title("Output (StringToWordVector)")
+    print(filtered)
 
 if __name__ == "__main__":
     try:
