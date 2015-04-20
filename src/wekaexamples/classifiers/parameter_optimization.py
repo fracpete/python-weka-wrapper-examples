@@ -18,10 +18,9 @@ import os
 import sys
 import traceback
 import weka.core.jvm as jvm
-import javabridge
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
-from weka.classifiers import Classifier, SingleClassifierEnhancer
+from weka.classifiers import Classifier, GridSearch
 
 
 def gridsearch():
@@ -38,23 +37,17 @@ def gridsearch():
     train.class_is_last()
 
     # classifier
-    grid = SingleClassifierEnhancer(
-        classname="weka.classifiers.meta.GridSearch",
-        options=[
-            "-E", "CC",
-            "-y-property", "kernel.gamma", "-y-min", "-3.0", "-y-max", "3.0", "-y-step", "1.0", "-y-base", "10.0",
-            "-y-expression", "pow(BASE,I)",
-            "-x-property", "C", "-x-min", "-3.0", "-x-max", "3.0", "-x-step", "1.0", "-x-base", "10.0",
-            "-x-expression", "pow(BASE,I)",
-            "-sample-size", "100.0", "-traversal", "ROW-WISE", "-num-slots", "1", "-S", "1"])
+    grid = GridSearch(options=["-sample-size", "100.0", "-traversal", "ROW-WISE", "-num-slots", "1", "-S", "1"])
+    grid.evaluation = "CC"
+    grid.y = {"property": "kernel.gamma", "min": -3.0, "max": 3.0, "step": 1.0, "base": 10.0, "expression": "pow(BASE,I)"}
+    grid.x = {"property": "C", "min": -3.0, "max": 3.0, "step": 1.0, "base": 10.0, "expression": "pow(BASE,I)"}
     cls = Classifier(
         classname="weka.classifiers.functions.SMOreg",
         options=["-K", "weka.classifiers.functions.supportVector.RBFKernel"])
     grid.classifier = cls
     grid.build_classifier(train)
-    print(str(grid))
-    best = Classifier(jobject=javabridge.call(grid.jobject, "getBestClassifier", "()Lweka/classifiers/Classifier;"))
-    print(best.to_commandline())
+    print("Model:\n" + str(grid))
+    print("\nBest setup:\n" + grid.best.to_commandline())
 
 
 def main():
