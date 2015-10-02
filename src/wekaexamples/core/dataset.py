@@ -16,9 +16,11 @@
 
 import os
 import traceback
+from random import randint
 import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
+import weka.core.dataset as ds
 from weka.core.dataset import Instances
 from weka.core.dataset import Instance
 from weka.core.dataset import Attribute
@@ -132,6 +134,13 @@ def main():
     print("sparse Instance:\n" + str(inst))
     dataset.add_instance(inst)
     print("dataset with mixed dense/sparse instance objects:\n" + str(dataset))
+
+    # create dataset (2)
+    helper.print_title("Create dataset from lists")
+    x = [[randint(1, 10) for _ in range(5)] for _ in range(10)]
+    y = [randint(0, 1) for _ in range(10)]
+    dataset2 = ds.create_instances_from_lists(x, y, "generated from lists")
+    print(dataset2)
 
     # create more sparse instances
     diabetes_file = helper.get_data_dir() + os.sep + "diabetes.arff"
