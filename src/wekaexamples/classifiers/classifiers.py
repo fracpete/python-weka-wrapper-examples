@@ -241,6 +241,21 @@ def main():
     plot_cls.plot_learning_curve(
         cls, diabetes_data, increments=0.05, label_template="[#] !", metric="percent_correct", wait=True)
 
+    # access classifier's Java API
+    labor_file = helper.get_data_dir() + os.sep + "labor.arff"
+    helper.print_info("Loading dataset: " + labor_file)
+    loader = Loader("weka.core.converters.ArffLoader")
+    labor_data = loader.load_file(labor_file)
+    labor_data.class_is_last()
+
+    helper.print_title("Using JRip's Java API to access rules")
+    jrip = Classifier(classname="weka.classifiers.rules.JRip")
+    jrip.build_classifier(labor_data)
+    rset = jrip.jwrapper.getRuleset()
+    for i in xrange(rset.size()):
+        r = rset.get(i)
+        print(str(r.toString(labor_data.class_attribute.jobject)))
+
 
 if __name__ == "__main__":
     try:
