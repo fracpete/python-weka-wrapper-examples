@@ -66,3 +66,7 @@ target/
 # other
 generated.arff
 
+/bin/
+.classpath
+.project
+.pydevproject
