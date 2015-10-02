@@ -20,14 +20,16 @@ You can post questions, patches or enhancement requests in the following Google 
 
 https://groups.google.com/forum/#!forum/python-weka-wrapper
 
-## Library Setup in Eclipse PyDev
+## IDEs
 
-1. when add external library, path should stop at "site-packages", and then import will work as "import weka.core.jvm as jvm" 
+### Library Setup in Eclipse PyDev
 
-	working: "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
-	not working: "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/weka"
+1. when add external library, path should stop at `site-packages`, and then import will work as `import weka.core.jvm as jvm` 
+
+  * working: `/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages`
+  * not working: `/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/weka`
 	
 2. when add source folder as library, same as above, path stop at "src", then then imporit will work as "import wekaexamples.helper as helper"
 
-	working: "${PROJ_DIR_NAME}/src"
-	not working: "${PROJ_DIR_NAME}/src/wekaexamples"
+  * working: `${PROJ_DIR_NAME}/src`
+  * not working: `${PROJ_DIR_NAME}/src/wekaexamples`
