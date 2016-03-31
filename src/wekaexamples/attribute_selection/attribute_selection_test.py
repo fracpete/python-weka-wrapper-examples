@@ -74,8 +74,8 @@ def use_low_level(data):
     attsel = AttributeSelection()
     aseval = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval")
     assearch = ASSearch(classname="weka.attributeSelection.GreedyStepwise", options=["-B"])
-    attsel.jwrapper().setEvaluator(aseval.jobject)
-    attsel.jwrapper().setSearch(assearch.jobject)
+    attsel.jwrapper.setEvaluator(aseval.jobject)
+    attsel.jwrapper.setSearch(assearch.jobject)
     attsel.select_attributes(data)
     indices = attsel.selected_attributes
     print("selected attribute indices (starting with 0):\n" + str(indices.tolist()))
