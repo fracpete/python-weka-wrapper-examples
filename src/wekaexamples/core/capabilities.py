@@ -47,7 +47,7 @@ def main():
 
     # disable/enable
     helper.print_title("Disable/Enable")
-    capability = Capability.parse("UNARY_ATTRIBUTES")
+    capability = Capability(member="UNARY_ATTRIBUTES")
     capabilities.disable(capability)
     capabilities.min_instances = 10
     print("Removing: " + str(capability))
