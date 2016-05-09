@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # setup.py
-# Copyright (C) 2014-2015 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2016 Fracpete (pythonwekawrapper at gmail dot com)
 
 from setuptools import setup
 
@@ -29,7 +29,7 @@ setup(
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
     ],
     license='GNU General Public License version 3.0 (GPLv3)',
     package_dir={
@@ -47,6 +47,6 @@ setup(
     author='Peter "fracpete" Reutemann',
     author_email='pythonwekawrapper at gmail dot com',
     install_requires=[
-        "python-weka-wrapper>=0.3.7",
+        "python-weka-wrapper>=0.3.8",
     ],
 )
