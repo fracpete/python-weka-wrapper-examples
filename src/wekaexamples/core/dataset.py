@@ -25,6 +25,7 @@ from weka.core.dataset import Instances
 from weka.core.dataset import Instance
 from weka.core.dataset import Attribute
 import weka.plot.dataset as pld
+import numpy as np
 
 
 def main():
@@ -135,7 +136,7 @@ def main():
     dataset.add_instance(inst)
     print("dataset with mixed dense/sparse instance objects:\n" + str(dataset))
 
-    # create dataset (2)
+    # create dataset (lists)
     helper.print_title("Create dataset from lists")
     x = [[randint(1, 10) for _ in range(5)] for _ in range(10)]
     y = [randint(0, 1) for _ in range(10)]
@@ -144,6 +145,16 @@ def main():
     x = [[randint(1, 10) for _ in range(5)] for _ in range(10)]
     dataset2 = ds.create_instances_from_lists(x, name="generated from lists (no y)")
     print(dataset2)
+
+    # create dataset (matrices)
+    helper.print_title("Create dataset from matrices")
+    x = np.random.randn(10, 5)
+    y = np.random.randn(10)
+    dataset3 = ds.create_instances_from_matrices(x, y, "generated from matrices")
+    print(dataset3)
+    x = np.random.randn(10, 5)
+    dataset3 = ds.create_instances_from_matrices(x, name="generated from matrices (no y)")
+    print(dataset3)
 
     # create more sparse instances
     diabetes_file = helper.get_data_dir() + os.sep + "diabetes.arff"
