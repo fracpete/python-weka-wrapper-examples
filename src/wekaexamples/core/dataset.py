@@ -120,7 +120,7 @@ def main():
     inst = Instance.create_instance(values)
     print("Instance #1:\n" + str(inst))
     dataset.add_instance(inst)
-    values = [2.71828, date_att.parse_date("2014-08-09"), float('nan')]
+    values = [2.71828, date_att.parse_date("2014-08-09"), Instance.missing_value()]
     inst = Instance.create_instance(values)
     dataset.add_instance(inst)
     print("Instance #2:\n" + str(inst))
