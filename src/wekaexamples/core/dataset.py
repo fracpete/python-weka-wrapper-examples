@@ -141,6 +141,9 @@ def main():
     y = [randint(0, 1) for _ in range(10)]
     dataset2 = ds.create_instances_from_lists(x, y, "generated from lists")
     print(dataset2)
+    x = [[randint(1, 10) for _ in range(5)] for _ in range(10)]
+    dataset2 = ds.create_instances_from_lists(x, name="generated from lists (no y)")
+    print(dataset2)
 
     # create more sparse instances
     diabetes_file = helper.get_data_dir() + os.sep + "diabetes.arff"
