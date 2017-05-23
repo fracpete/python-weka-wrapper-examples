@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # datagenerators.py
-# Copyright (C) 2014-2015 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2017 Fracpete (pythonwekawrapper at gmail dot com)
 
 import traceback
 import weka.core.jvm as jvm
@@ -48,6 +48,12 @@ def main():
             print(generator.generate_example())
     else:
         print(generator.generate_examples())
+
+    # partial classname
+    helper.print_title("Creating clusterer from partial classname")
+    clsname = ".Agrawal"
+    generator = DataGenerator(classname=clsname)
+    print(clsname + " --> " + generator.classname)
 
 if __name__ == "__main__":
     try:

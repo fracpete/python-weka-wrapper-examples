@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # filters.py
-# Copyright (C) 2014-2015 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2017 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import traceback
@@ -81,6 +81,12 @@ def main():
     print(data)
     helper.print_title("Output (StringToWordVector)")
     print(filtered)
+
+    # partial classname
+    helper.print_title("Creating clusterer from partial classname")
+    clsname = ".Standardize"
+    f = Filter(classname=clsname)
+    print(clsname + " --> " + f.classname)
 
 if __name__ == "__main__":
     try:

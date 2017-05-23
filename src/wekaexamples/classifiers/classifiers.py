@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # classifiers.py
-# Copyright (C) 2014-2015 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2017 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import traceback
@@ -45,6 +45,12 @@ def main():
     helper.print_title("Creating help string")
     classifier = Classifier(classname="weka.classifiers.trees.J48")
     print(classifier.to_help())
+
+    # partial classname
+    helper.print_title("Creating classifier from partial classname")
+    clsname = ".J48"
+    classifier = Classifier(classname=clsname)
+    print(clsname + " --> " + classifier.classname)
 
     # classifier from commandline
     helper.print_title("Creating SMO from command-line string")
