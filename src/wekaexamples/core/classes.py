@@ -27,7 +27,7 @@ def main():
 
     # generic JavaObject stuff
     helper.print_title("Generic stuff using weka.core.SystemInfo")
-    info = JavaObject(JavaObject.new_instance(classname="weka.core.SystemInfo"))
+    info = JavaObject(JavaObject.new_instance("weka.core.SystemInfo"))
     jwrapper = info.jwrapper
     print("toString() method:")
     print(jwrapper.toString())
