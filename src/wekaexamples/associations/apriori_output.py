@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # apriori_output.py
-# Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2018 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import sys
@@ -21,6 +21,8 @@ import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.converters import Loader
 from weka.associations import Associator
+import javabridge
+from javabridge import JWrapper
 
 
 def main(args):
@@ -44,6 +46,20 @@ def main(args):
     apriori = Associator(classname="weka.associations.Apriori", options=["-c", "-1"])
     apriori.build_associations(data)
     print(str(apriori))
+
+    # iterate association rules
+    helper.print_info("Rules")
+    # make the underlying rules list object iterable in Python
+    rules = javabridge.iterate_collection(apriori.jwrapper.getAssociationRules().getRules().o)
+    for i, r in enumerate(rules):
+        # wrap the Java object to make its methods accessible
+        rule = JWrapper(r)
+        print(str(i+1) + ". " + str(rule))
+        # output some details on rule
+        print("   - consequence support: " + str(rule.getConsequenceSupport()))
+        print("   - premise support: " + str(rule.getPremiseSupport()))
+        print("   - total support: " + str(rule.getTotalSupport()))
+        print("   - total transactions: " + str(rule.getTotalTransactions()))
 
 if __name__ == "__main__":
     try:
