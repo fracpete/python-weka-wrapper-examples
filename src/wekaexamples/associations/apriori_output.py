@@ -47,8 +47,8 @@ def main(args):
     apriori.build_associations(data)
     print(str(apriori))
 
-    # iterate association rules
-    helper.print_info("Rules")
+    # iterate association rules (low-level)
+    helper.print_info("Rules (low-level)")
     # make the underlying rules list object iterable in Python
     rules = javabridge.iterate_collection(apriori.jwrapper.getAssociationRules().getRules().o)
     for i, r in enumerate(rules):
@@ -60,6 +60,32 @@ def main(args):
         print("   - premise support: " + str(rule.getPremiseSupport()))
         print("   - total support: " + str(rule.getTotalSupport()))
         print("   - total transactions: " + str(rule.getTotalTransactions()))
+
+    # iterate association rules (high-level)
+    helper.print_info("Rules (high-level)")
+    print("can produce rules? " + str(apriori.can_produce_rules()))
+    print("rule metric names: " + str(apriori.rule_metric_names))
+    rules = apriori.association_rules()
+    if rules is not None:
+        print("producer: " + rules.producer)
+        print("# rules: " + str(len(rules)))
+        for i, rule in enumerate(rules):
+            print(str(i+1) + ". " + str(rule))
+            # output some details on rule
+            print("   - consequence support: " + str(rule.consequence_support))
+            print("   - consequence: " + str(rule.consequence))
+            print("   - premise support: " + str(rule.premise_support))
+            print("   - premise: " + str(rule.premise))
+            print("   - total support: " + str(rule.total_support))
+            print("   - total transactions: " + str(rule.total_transactions))
+            print("   - metric names: " + str(rule.metric_names))
+            print("   - metric values: " + str(rule.metric_values))
+            print("   - metric value 'Confidence': " + str(rule.metric_value('Confidence')))
+            print("   - primary metric name: " + str(rule.primary_metric_name))
+            print("   - primary metric value: " + str(rule.primary_metric_value))
+            #print("   - equals first: " + str(rule == rules[0]))
+            #print("   - greater than first: " + str(rule > rules[0]))
+            #print("   - greater or equal than first: " + str(rule >= rules[0]))
 
 if __name__ == "__main__":
     try:
