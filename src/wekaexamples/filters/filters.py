@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # filters.py
-# Copyright (C) 2014-2017 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2018 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import traceback
@@ -83,10 +83,21 @@ def main():
     print(filtered)
 
     # partial classname
-    helper.print_title("Creating clusterer from partial classname")
+    helper.print_title("Creating filter from partial classname")
     clsname = ".Standardize"
     f = Filter(classname=clsname)
     print(clsname + " --> " + f.classname)
+
+    # source code
+    helper.print_info("Generate source code")
+    bolts = helper.get_data_dir() + os.sep + "labor.arff"
+    helper.print_info("Loading dataset: " + bolts)
+    loader = Loader("weka.core.converters.ArffLoader")
+    data = loader.load_file(bolts)
+    replace = Filter(classname="weka.filters.unsupervised.attribute.ReplaceMissingValues")
+    replace.inputformat(data)
+    replace.filter(data)
+    print(replace.to_source("MyReplaceMissingValues", data))
 
 if __name__ == "__main__":
     try:

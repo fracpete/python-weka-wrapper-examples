@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # classifiers.py
-# Copyright (C) 2014-2017 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2019 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import traceback
@@ -80,6 +80,7 @@ def main():
     classifier.build_classifier(iris_data)
     print(classifier)
     print(classifier.graph)
+    print(classifier.to_source("MyJ48"))
     plot_graph.plot_dot_graph(classifier.graph)
 
     # evaluate model on test set
