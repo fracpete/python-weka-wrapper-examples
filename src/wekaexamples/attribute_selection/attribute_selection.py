@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # attribute_selection.py
-# Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2019 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import traceback
@@ -45,7 +45,8 @@ def main():
     attsel.evaluator(evaluation)
     attsel.select_attributes(anneal_data)
     print("# attributes: " + str(attsel.number_attributes_selected))
-    print("attributes: " + str(attsel.selected_attributes))
+    print("attributes (as numpy array): " + str(attsel.selected_attributes))
+    print("attributes (as list): " + str(list(attsel.selected_attributes)))
     print("result string:\n" + attsel.results_string)
 
     # perform ranking
