@@ -12,9 +12,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # helper.py
-# Copyright (C) 2014 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2019 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
+import tempfile
 
 
 def get_data_dir():
@@ -47,3 +48,12 @@ def print_info(info):
     """
 
     print("\n" + info)
+
+
+def get_tmp_dir():
+    """
+    Returns the tmp directory.
+
+    :return: the tmp directory
+    """
+    return tempfile.gettempdir()

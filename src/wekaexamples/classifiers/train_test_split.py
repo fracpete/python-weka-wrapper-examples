@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # train_test_split.py
-# Copyright (C) 2015 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2015-2019 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import sys
@@ -21,13 +21,17 @@ import weka.core.jvm as jvm
 import wekaexamples.helper as helper
 from weka.core.classes import Random
 from weka.core.converters import Loader
-from weka.classifiers import Classifier, Evaluation
+from weka.classifiers import Classifier, Evaluation, PredictionOutput
 
 
 def main(args):
     """
     Loads a dataset, shuffles it, splits it into train/test set. Trains J48 with training set and
     evaluates the built model on the test set.
+    The predictions get recorded in two different ways:
+    1. in-memory via the test_model method
+    2. directly to file (more memory efficient), but a separate run of making predictions
+
     :param args: the commandline arguments (optional, can be dataset filename)
     :type args: list
     """
@@ -50,10 +54,24 @@ def main(args):
     cls.build_classifier(train)
     print(cls)
 
-    # evaluate
+    # evaluate and record predictions in memory
+    helper.print_title("recording predictions in-memory")
+    output = PredictionOutput(classname="weka.classifiers.evaluation.output.prediction.CSV", options=["-distribution"])
     evl = Evaluation(train)
-    evl.test_model(cls, test)
+    evl.test_model(cls, test, output=output)
     print(evl.summary())
+    helper.print_info("Predictions:")
+    print(output.buffer_content())
+
+    # record/output predictions separately
+    helper.print_title("recording/outputting predictions separately")
+    outputfile = helper.get_tmp_dir() + "/j48_vote.csv"
+    output = PredictionOutput(classname="weka.classifiers.evaluation.output.prediction.CSV", options=["-distribution", "-suppress", "-file", outputfile])
+    output.header = test
+    output.print_all(cls, test)
+    helper.print_info("Predictions stored in: " + outputfile)
+    # by using "-suppress" we don't store the output in memory, the following statement won't output anything
+    print(output.buffer_content())
 
 
 if __name__ == "__main__":
