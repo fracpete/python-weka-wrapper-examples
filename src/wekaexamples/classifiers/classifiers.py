@@ -248,6 +248,12 @@ def main():
         print(str(index+1) + ": " + str(pred) + " -> error=" + str(pred.error))
     plot_cls.plot_classifier_errors(evaluation.predictions, wait=False)
 
+    # train 2nd classifier and show errors in same plot
+    classifier2 = Classifier(classname="weka.classifiers.functions.SMOreg")
+    evaluation2 = Evaluation(bolts_data)
+    evaluation2.crossvalidate_model(classifier2, bolts_data, 10, Random(42))
+    plot_cls.plot_classifier_errors({"LR": evaluation.predictions, "SMOreg": evaluation2.predictions}, wait=False)
+
     # learning curve
     cls = [
         Classifier(classname="weka.classifiers.trees.J48"),
