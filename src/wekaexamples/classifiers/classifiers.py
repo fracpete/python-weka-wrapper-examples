@@ -213,6 +213,13 @@ def main():
         evaluation, title="PRC diabetes",
         class_index=range(0, diabetes_data.class_attribute.num_values), wait=False)
 
+    # train 2nd classifier on diabetes dataset
+    classifier2 = Classifier(classname="weka.classifiers.trees.RandomForest")
+    evaluation2 = Evaluation(diabetes_data)
+    evaluation2.crossvalidate_model(classifier2, diabetes_data, 10, Random(42))
+    plot_cls.plot_rocs({"NB": evaluation, "RF": evaluation2}, title="ROC diabetes", class_index=0, wait=False)
+    plot_cls.plot_prcs({"NB": evaluation, "RF": evaluation2}, title="PRC diabetes", class_index=0, wait=False)
+
     # load a numeric dataset
     bolts_file = helper.get_data_dir() + os.sep + "bolts.arff"
     helper.print_info("Loading dataset: " + bolts_file)
