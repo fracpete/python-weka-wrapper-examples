@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # dataset.py
-# Copyright (C) 2014-2015 Fracpete (pythonwekawrapper at gmail dot com)
+# Copyright (C) 2014-2019 Fracpete (pythonwekawrapper at gmail dot com)
 
 import os
 import traceback
@@ -140,21 +140,37 @@ def main():
     helper.print_title("Create dataset from lists")
     x = [[randint(1, 10) for _ in range(5)] for _ in range(10)]
     y = [randint(0, 1) for _ in range(10)]
-    dataset2 = ds.create_instances_from_lists(x, y, "generated from lists")
+    dataset2 = ds.create_instances_from_lists(x, y, name="generated from lists")
     print(dataset2)
     x = [[randint(1, 10) for _ in range(5)] for _ in range(10)]
     dataset2 = ds.create_instances_from_lists(x, name="generated from lists (no y)")
+    print(dataset2)
+
+    # create dataset (mixed lists)
+    helper.print_title("Create dataset from mixed lists")
+    x = [["TEXT", 1, 1.1], ["XXX", 2, 2.2]]
+    y = ["A", "B"]
+    dataset2 = ds.create_instances_from_lists(x, y, name="generated from mixed lists")
+    print(dataset2)
+    dataset2 = ds.create_instances_from_lists(x, name="generated from mixed lists (no y)")
     print(dataset2)
 
     # create dataset (matrices)
     helper.print_title("Create dataset from matrices")
     x = np.random.randn(10, 5)
     y = np.random.randn(10)
-    dataset3 = ds.create_instances_from_matrices(x, y, "generated from matrices")
+    dataset3 = ds.create_instances_from_matrices(x, y, name="generated from matrices")
     print(dataset3)
     x = np.random.randn(10, 5)
     dataset3 = ds.create_instances_from_matrices(x, name="generated from matrices (no y)")
     print(dataset3)
+
+    # create dataset (mixed type matrices)
+    helper.print_title("Create dataset from (mixed type) matrix")
+    x = np.array([("TEXT", 1, 1.1), ("XXX", 2, 2.2)], dtype='S20, i4, f8')
+    y = np.array(["A", "B"], dtype='S20')
+    dataset4 = ds.create_instances_from_matrices(x, y, name="generated from mixed matrices")
+    print(dataset4)
 
     # create more sparse instances
     diabetes_file = helper.get_data_dir() + os.sep + "diabetes.arff"
