@@ -1,3 +1,11 @@
+# END OF LIFE
+
+**Python 2.7 has reached its [end-of-life in 2020](https://pythonclock.org/), you should consider
+using the [Python 3 version](https://github.com/fracpete/python-weka-wrapper3) of this library,
+as the Python 2.7 version will no longer get updates!**
+
+**Examples for the Python3 version are available [here](https://github.com/fracpete/python-weka-wrapper3-examples).**
+
 # python-weka-wrapper-examples
 
 Example code for the Python wrapper for Weka (https://github.com/fracpete/python-weka-wrapper).
